@@ -31,8 +31,6 @@ public class SettingsFragment extends Fragment {
 
         btnLogout = v.findViewById(R.id.logout);
 
-
-
         //Setting Page
         btnLogout.setOnClickListener(new View.OnClickListener() {
             @Override

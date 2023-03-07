@@ -4,8 +4,12 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/FYP_Development/Merchant2/app/src/main/res/layout/activity_login.xml" value="0.31476449275362317" />
-        <entry key="..\:/FYP_Development/Merchant2/app/src/main/res/layout/activity_main.xml" value="0.31476449275362317" />
+        <entry key="..\:/FYP_Development/Merchant2/app/src/main/res/layout/activity_main.xml" value="0.2" />
         <entry key="..\:/FYP_Development/Merchant2/app/src/main/res/layout/activity_register.xml" value="0.31476449275362317" />
+        <entry key="..\:/FYP_Development/Merchant2/app/src/main/res/layout/fragment_home.xml" value="0.1716485507246377" />
+        <entry key="..\:/FYP_Development/Merchant2/app/src/main/res/layout/fragment_profile.xml" value="0.2359375" />
+        <entry key="..\:/FYP_Development/Merchant2/app/src/main/res/layout/fragment_settings.xml" value="0.25" />
+        <entry key="..\:/FYP_Development/Merchant2/app/src/main/res/menu/bottom_nav_menu.xml" value="0.25" />
       </map>
     </option>
   </component>

@@ -27,4 +27,28 @@
         android:layout_gravity="center"
         android:text="Logout" />
 
+    <Button
+        android:id="@+id/push"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="push Negative" />
+
+    <Button
+        android:id="@+id/positive"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="push positive" />
+
+    <Button
+        android:id="@+id/transaction"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="transaction" />
+
 </LinearLayout>

@@ -41,7 +41,6 @@ public class ReceiveFragment extends Fragment {
         eightBtn = v.findViewById(R.id.eight);
         nineBtn = v.findViewById(R.id.nine);
 
-
         dotBtn = v.findViewById(R.id.dot);
         clearBtn = v.findViewById(R.id.clear);
         backspaceBtn = v.findViewById(R.id.backspace);
@@ -92,7 +91,6 @@ public class ReceiveFragment extends Fragment {
                 } else if (R.id.dot == id) {
                     generateExpression(".");
                 }
-                toast(String.valueOf(resultTxtView.getText()));
             }
         };
 

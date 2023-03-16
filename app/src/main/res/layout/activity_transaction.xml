@@ -3,34 +3,62 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mainLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".TransactionActivity">
 
 
-    <TextView
-        android:id="@+id/startDate"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="JAN 01 2020"
-        android:layout_marginLeft="5dp"
-        android:backgroundTint="@color/light_grey"
-        android:textColor="@color/black"
-        style="?android:spinnerStyle"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        />
+        android:orientation="horizontal"
+        android:layout_gravity="center"
+        android:padding="10dp">
 
-    <TextView
-        android:id="@+id/endDate"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="JAN 01 2020"
-        android:layout_marginLeft="5dp"
-        android:backgroundTint="@color/light_grey"
-        android:textColor="@color/black"
-        style="?android:spinnerStyle"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-         />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="25dp"
+            android:textStyle="bold"
+            android:text="History" />
+
+        <Button
+            android:id="@+id/transaction_btn_search"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:layout_weight="1"
+            android:backgroundTint="@color/soft_blue"
+            android:text="Search" />
+
+        <Button
+            android:id="@+id/transaction_btn_reset"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/soft_blue"
+            android:layout_weight="1"
+            android:text="Reset" />
+
+    </LinearLayout>
+
+    <View
+        android:id="@+id/view"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@color/black"/>
+
+    <ScrollView
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginBottom="10dp"
+        android:id="@+id/wholeTransaction"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    </ScrollView>
+
+
 </LinearLayout>

@@ -2,10 +2,12 @@ package com.utar.merchant;
 
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.Layout;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,27 +38,55 @@ import java.util.List;
 public class TransactionActivity extends AppCompatActivity {
     private DatabaseReference databaseReference;
     private List<Transaction> transactionList = new ArrayList<>(), searchList;
+
+
     private int displayHeight, displayWidth;
     private int blue;
 
     private DatePickerDialog startDatePickerDialog, endDatePickerDialog;
     private TextView tv_startDate, tv_endDate;
+    private AlertDialog dialog;
+
+
+    private ScrollView transactionScrollView;
+    private LinearLayout listLayout = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_transaction);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        setTitle("Transaction History");
 
-        blue = getResources().getColor(R.color.soft_blue);
+        //System Initialise
+        getSupportActionBar().hide();
         displayHeight = getResources().getDisplayMetrics().heightPixels;
         displayWidth = getResources().getDisplayMetrics().widthPixels;
-
         String userID = FirebaseAuth.getInstance().getUid();
         FirebaseDatabase.getInstance().getReference("user").child(userID).keepSynced(true);
-        databaseReference = FirebaseDatabase.getInstance().getReference("user").child(userID).child("transactions");
+        databaseReference = FirebaseDatabase.getInstance().getReference("user");
+        blue = getResources().getColor(R.color.soft_blue);
+        initDatePickDialog();
 
-        databaseReference.addValueEventListener(new ValueEventListener() {
+        // Retrieve ID
+        transactionScrollView = findViewById(R.id.wholeTransaction);
+        Button btn_search = findViewById(R.id.transaction_btn_search);
+        Button btn_reset = findViewById(R.id.transaction_btn_reset);
+
+        btn_search.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.show();
+            }
+        });
+
+        btn_reset.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setTransactionView(transactionList);
+                transactionScrollView.addView(listLayout);
+            }
+        });
+
+        databaseReference.child(userID).child("transactions").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
                 if(snapshot.exists()) {
@@ -65,8 +95,9 @@ public class TransactionActivity extends AppCompatActivity {
                         Transaction transaction = dataSnapshot.getValue(Transaction.class);
                         transactionList.add(transaction);
                     }
-                    toast("Transaction histories sync done");
-                    setView(showList(transactionList));
+                    //setView(showList(transactionList));
+                    setTransactionView(transactionList);
+                    transactionScrollView.addView(listLayout);
 
                 }
                 else {
@@ -85,27 +116,117 @@ public class TransactionActivity extends AppCompatActivity {
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
     }
 
+    private void setTransactionView(List<Transaction> list){
+        if(listLayout != null) {
+            if (listLayout.getParent() != null) {
+                ((ScrollView) listLayout.getParent()).removeView(listLayout);
+            }
+        }
 
+        //For whole transaction list
+        listLayout = new LinearLayout(this);
+        listLayout.setOrientation(LinearLayout.VERTICAL);
+        listLayout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+        listLayout.setPadding(0,0,10,0);
 
-    private void setView(View view){
+        for(int i = list.size() - 1; i >= 0; i--){
+            Transaction transaction = list.get(i);
 
-        initDatePicker();
-        LinearLayout mainLayout = new LinearLayout(this);
-        mainLayout.setOrientation(LinearLayout.VERTICAL);
+            //for single transaction container
+            LinearLayout singleTransaction = new LinearLayout(this);
+            singleTransaction.setOrientation(LinearLayout.VERTICAL);
+            singleTransaction.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
 
-        tv_startDate = findViewById(R.id.startDate);
-        ((ViewGroup)tv_startDate.getParent()).removeView(tv_startDate);
-        tv_startDate.setTextSize(displayWidth * displayHeight / 100000 - 5);
+            // Transaction display layout:
+            // [Name]   [Amount]
+            // [Date]   [Type]
+
+            // name textview
+            TextView tv_name = new TextView(this);
+            tv_name.setText(transaction.getObjectName());
+            tv_name.setTextSize(displayWidth * displayHeight / 100000 - 5);
+            tv_name.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+            tv_name.setTextColor(Color.BLACK);
+            tv_name.setLayoutParams(new ViewGroup.LayoutParams((int) (displayWidth * 0.6), ViewGroup.LayoutParams.WRAP_CONTENT));
+            tv_name.setGravity(Gravity.LEFT);
+
+            TextView tv_amount = new TextView(this);
+            tv_amount.setTextSize(displayWidth * displayHeight / 100000 - 5);
+            tv_amount.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+            tv_amount.setLayoutParams(new ViewGroup.LayoutParams((int) (displayWidth * 0.35), ViewGroup.LayoutParams.MATCH_PARENT));
+            tv_amount.setGravity(Gravity.RIGHT);
+            if(transaction.getType().equals(Transaction.PAYMENT) || transaction.getType().equals(Transaction.TRANSFER_OUT)){
+                tv_amount.setText(String.format("- RM%.2f", transaction.getAmount()));
+                tv_amount.setTextColor(getResources().getColor(R.color.dark_red));
+            }
+            else{
+                tv_amount.setText(String.format("RM%.2f",transaction.getAmount()));
+                tv_amount.setTextColor(getResources().getColor(R.color.dark_green));
+            }
+
+            //container design for single transaction details
+            GridLayout gl = new GridLayout(this);
+            gl.setOrientation(GridLayout.HORIZONTAL);
+            gl.setRowCount(1);
+            gl.setColumnCount(2);
+            gl.addView(tv_name);
+            gl.addView(tv_amount);
+            singleTransaction.addView(gl);
+
+            // Transaction display layout:
+            // [Name]   [Amount]  => Configuration done
+            // [Date]   [Type]
+
+            TextView tv_time = new TextView(this);
+            tv_time.setText(transaction.getTime());
+            tv_time.setTextSize(displayWidth * displayHeight / 100000 - 8);
+            tv_time.setLayoutParams(new ViewGroup.LayoutParams((int) (displayWidth * 0.4), ViewGroup.LayoutParams.MATCH_PARENT));
+            tv_time.setTextColor(Color.BLACK);
+            tv_time.setPadding(0,10,0,10);
+            tv_time.setGravity(Gravity.LEFT);
+
+            TextView tv_type = new TextView(this);
+            tv_type.setText(transaction.getType());
+            tv_type.setTextSize(displayWidth * displayHeight / 100000 - 8);
+            tv_type.setLayoutParams(new ViewGroup.LayoutParams((int) (displayWidth * 0.55), ViewGroup.LayoutParams.MATCH_PARENT));
+            tv_type.setTextColor(Color.BLACK);
+            tv_type.setGravity(Gravity.RIGHT);
+
+            gl = new GridLayout(this);
+            gl.setOrientation(GridLayout.HORIZONTAL);
+            gl.setRowCount(1);
+            gl.setColumnCount(2);
+            gl.addView(tv_time);
+            gl.addView(tv_type);
+            singleTransaction.addView(gl);
+
+            View separator = new View(this);
+            separator.setBackgroundColor(Color.BLACK);
+            separator.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (int) (displayHeight * 0.001)));
+            separator.setPadding(0,15,0,15);
+            singleTransaction.addView(separator);
+
+            listLayout.addView(singleTransaction);
+        }
+
+    }
+
+    private void initDatePickDialog(){
+        AlertDialog.Builder alert = new AlertDialog.Builder(this);
+
+        View view = getLayoutInflater().inflate(R.layout.layout_date_picker, null);
+        TextView tv_cancel = view.findViewById(R.id.date_tv_cancel);
+        TextView tv_submit = view.findViewById(R.id.date_tv_submit);
+        tv_startDate = view.findViewById(R.id.picker_startDate);
+        tv_endDate = view.findViewById(R.id.picker_endDate);
+
+        //show date picker dialog
         tv_startDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startDatePickerDialog.show();
             }
         });
-
-        tv_endDate = findViewById(R.id.endDate);
-        ((ViewGroup)tv_endDate.getParent()).removeView(tv_endDate);
-        tv_endDate.setTextSize(displayWidth * displayHeight / 100000 - 5);
         tv_endDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -113,109 +234,130 @@ public class TransactionActivity extends AppCompatActivity {
             }
         });
 
-        LinearLayout searchLayoutTop = new LinearLayout(this);
-        searchLayoutTop.setOrientation(LinearLayout.HORIZONTAL);
-        searchLayoutTop.setGravity(Gravity.CENTER);
-        searchLayoutTop.setBackgroundColor(getResources().getColor(R.color.white_grey));
+        tv_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
 
-        TextView tv_to = new TextView(this);
-        tv_to.setText(" to ");
-        tv_to.setTextSize(displayWidth * displayHeight / 100000 - 5);
-        searchLayoutTop.addView(tv_startDate);
-        searchLayoutTop.addView(tv_to);
-        searchLayoutTop.addView(tv_endDate);
-
-        TextView tv_search = new TextView(this);
-        tv_search.setText("SEARCH");
-        tv_search.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
-        tv_search.setTextColor(Color.BLUE);
-        tv_search.setTextSize(displayWidth * displayHeight / 100000 - 5);
-        tv_search.setGravity(Gravity.RIGHT);
-        tv_search.setPadding(0,0,(int)(displayWidth * 0.05),0);
-        tv_search.setOnClickListener(new View.OnClickListener() {
+        tv_submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String startDate = String.valueOf(tv_startDate.getText());
                 String endDate = String.valueOf(tv_endDate.getText());
 
+                if(startDate.equals("Mmm DD YYYY      \u25BC") || endDate.equals("Mmm DD YYYY      \u25BC")){
+                    toast("Please select date");
+                    return;
+                }
+
+                startDate = startDate.substring(0, 11) + " 00:00:00";
+                endDate = endDate.substring(0, 11) + " 23:59:59";
                 SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MMM dd yyyy hh:mm:ss");
-                startDate += " 00:00:00";
-                endDate += " 23:59:59";
+
                 searchList = new ArrayList<>();
                 try {
                     long startTime = simpleDateFormat.parse(startDate).getTime();
                     long endTime = simpleDateFormat.parse(endDate).getTime();
                     if(startTime > endTime){
-                        tv_startDate.setError("Invalid Date selected");
+                        AlertDialog.Builder alertDialog = new AlertDialog.Builder(TransactionActivity.this);
+                        alertDialog.setTitle("Alert");
+                        alertDialog.setMessage("End date should be greater than Start date");
+                        alertDialog.setPositiveButton( "OK",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialogOwn, int which) {
+                                        dialogOwn.dismiss();
+                                    }
+                                });
+                        alertDialog.create().show();
                         return;
-                    }
-                    for(int i = transactionList.size()-1; i >= 0; i--){
-                        if(isInRange(transactionList.get(i), startTime, endTime)){
-                            searchList.add(transactionList.get(i));
-                        }
 
                     }
+                    else{
+                        for(int i = transactionList.size()-1; i >= 0; i--){
+                            if(isInRange(transactionList.get(i), startTime, endTime)){
+                                searchList.add(transactionList.get(i));
+                            }
+                        }
+
+                        if(searchList.size() == 0){
+                            toast("No record found!");
+                        }else {
+                            setTransactionView(searchList);
+                            transactionScrollView.addView(listLayout);
+                            dialog.dismiss();
+                        }
+                    }
+
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
 
-                if(searchList.size() == 0){
-                    toast("No record found!");
-                }
 
-                setView(showList(searchList));
             }
         });
+        alert.setView(view);
+        dialog = alert.create();
 
-        TextView tv_reset = new TextView(this);
-        tv_reset.setText("RESET");
-        tv_reset.setTextColor(Color.BLUE);
-        tv_reset.setTextSize(displayWidth * displayHeight / 100000 - 3);
-        tv_reset.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
-        tv_reset.setPadding((int)(displayWidth * 0.05),0, 0,0);
-        tv_reset.setGravity(Gravity.LEFT);
-        tv_reset.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                setView(showList(transactionList));
-            }
-        });
-
-        LinearLayout searchLayoutBottom = new LinearLayout(this);
-        searchLayoutBottom.setBackgroundColor(getResources().getColor(R.color.white_grey));
-        searchLayoutBottom.setOrientation(LinearLayout.HORIZONTAL);
-
-        searchLayoutBottom.addView(tv_reset);
-
-
-        LinearLayout searchLayoutBottom2 = new LinearLayout(searchLayoutBottom.getContext());
-        searchLayoutBottom2.setOrientation(LinearLayout.HORIZONTAL);
-        searchLayoutBottom2.setGravity(Gravity.RIGHT);
-
-        searchLayoutBottom2.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-        searchLayoutBottom2.addView(tv_search);
-        searchLayoutBottom2.setBackgroundColor(getResources().getColor(R.color.white_grey));
-
-        searchLayoutBottom.addView(searchLayoutBottom2);
-
-        mainLayout.addView(searchLayoutTop);
-        mainLayout.addView(searchLayoutBottom);
-
-        View separator = new View(this);
-        separator.setBackgroundColor(Color.BLACK);
-        separator.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (int) (displayHeight * 0.005)));
-        separator.setPadding(0, 10, 0, 10);
-        mainLayout.addView(separator);
-
-        mainLayout.addView(view);
-
-        mainLayout.setPadding((int)(displayWidth * 0.05), (int)(displayHeight * 0.01),(int)(displayWidth * 0.05), (int)(displayHeight * 0.01));
-
-        setContentView(mainLayout);
+        initDatePicker();
     }
 
-    private boolean isInRange(Transaction transaction, long startTime, long endTime){
-        return ((transaction.getTimestamp() > startTime) && (transaction.getTimestamp() < endTime));
+
+    private String makeDateString(int day, int month, int year){
+        String strMonth;
+        switch(month){
+            case 1: {
+                strMonth = "Jan";
+                break;
+            }
+            case 2:{
+                strMonth = "Feb";
+                break;
+            }
+            case 3:{
+                strMonth = "Mar";
+                break;
+            }
+            case 4:{
+                strMonth = "Apr";
+                break;
+            }
+            case 5:{
+                strMonth = "May";
+                break;
+            }
+            case 6:{
+                strMonth = "Jun";
+                break;
+            }
+            case 7:{
+                strMonth = "Jul";
+                break;
+            }
+            case 8:{
+                strMonth = "Aug";
+                break;
+            }
+            case 9:{
+                strMonth = "Sep";
+                break;
+            }
+            case 10:{
+                strMonth = "Oct";
+                break;
+            }
+            case 11:{
+                strMonth = "Nov";
+                break;
+            }
+            default:{
+                strMonth = "Dec";
+
+            }
+        }
+
+        return strMonth + " " + day + " " + year;
     }
 
     private void initDatePicker(){
@@ -224,7 +366,7 @@ public class TransactionActivity extends AppCompatActivity {
             public void onDateSet(DatePicker view, int year, int month, int day) {
                 month += 1;
                 String date = makeDateString(day, month, year);
-                tv_startDate.setText(date);
+                tv_startDate.setText(date + "      \u25BC");
             }
         };
 
@@ -233,7 +375,7 @@ public class TransactionActivity extends AppCompatActivity {
             public void onDateSet(DatePicker view, int year, int month, int day) {
                 month += 1;
                 String date = makeDateString(day, month, year);
-                tv_endDate.setText(date);
+                tv_endDate.setText(date + "      \u25BC");
             }
         };
 
@@ -248,147 +390,7 @@ public class TransactionActivity extends AppCompatActivity {
         endDatePickerDialog = new DatePickerDialog(this, style, endDateSetListener, year, month, day);
     }
 
-    private String makeDateString(int day, int month, int year){
-        return getMonthFormat(month) + " " + day + " " + year;
+    private boolean isInRange(Transaction transaction, long startTime, long endTime){
+        return ((transaction.getTimestamp() > startTime) && (transaction.getTimestamp() < endTime));
     }
-
-    private String getMonthFormat(int month) {
-        if(month == 1)
-            return "Jan";
-        if(month == 2)
-            return "Feb";
-        if(month == 3)
-            return "Mar";
-        if(month == 4)
-            return "Apr";
-        if(month == 5)
-            return "May";
-        if(month == 6)
-            return "Jun";
-        if(month == 7)
-            return "Jul";
-        if(month == 8)
-            return "Aug";
-        if(month == 9)
-            return "Sep";
-        if(month == 10)
-            return "Oct";
-        if(month == 11)
-            return "Nov";
-        if(month == 12)
-            return "Dec";
-
-        //default should never happen
-        return "JAN";
-    }
-
-    // To display the payment history
-    private View showList(List<Transaction> list){
-        TextView tv_name, tv_amount, tv_time, tv_type;
-
-        LinearLayout wholeTransaction = new LinearLayout(this);
-        wholeTransaction.setOrientation(LinearLayout.VERTICAL);
-        wholeTransaction.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-        GridLayout gl;
-        for(int i = list.size() - 1; i >= 0; i--){
-            Transaction transaction = list.get(i);
-
-            //for single transaction panel display
-            LinearLayout singleTransaction = new LinearLayout(this);
-            singleTransaction.setOrientation(LinearLayout.HORIZONTAL);
-            singleTransaction.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
-
-            gl = new GridLayout(this);
-            gl.setOrientation(GridLayout.HORIZONTAL);
-            gl.setRowCount(1);
-            gl.setColumnCount(2);
-
-
-
-            // text view name
-            tv_name = new TextView(this);
-            tv_name.setText(transaction.getObjectName());
-            tv_name.setTextSize(displayWidth * displayHeight / 100000 - 4);
-            tv_name.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
-            tv_name.setTextColor(Color.BLACK);
-            tv_name.setLayoutParams(new ViewGroup.LayoutParams((int) (displayWidth * 0.6), ViewGroup.LayoutParams.WRAP_CONTENT));
-            tv_name.setGravity(Gravity.LEFT);
-
-            tv_amount = new TextView(this);
-            tv_amount.setTextSize(displayWidth * displayHeight / 100000 - 4);
-            tv_amount.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
-            tv_amount.setLayoutParams(new ViewGroup.LayoutParams((int) (displayWidth * 0.3), ViewGroup.LayoutParams.MATCH_PARENT));
-
-            if(transaction.getType().equals(Transaction.PAYMENT) || transaction.getType().equals(Transaction.TRANSFER_OUT)){
-                tv_amount.setText(String.format("- RM%.2f", transaction.getAmount()));
-                tv_amount.setTextColor(getResources().getColor(R.color.dark_red));
-            }
-            else{
-                tv_amount.setText(String.format("RM%.2f",transaction.getAmount()));
-                tv_amount.setTextColor(getResources().getColor(R.color.dark_green));
-            }
-
-            tv_amount.setGravity(Gravity.RIGHT);
-
-            // Left Side Display
-            LinearLayout leftSide = new LinearLayout(this);
-            leftSide.setOrientation(LinearLayout.VERTICAL);
-            LinearLayout.LayoutParams leftParams = new LinearLayout.LayoutParams((int) (displayWidth * 0.4), LinearLayout.LayoutParams.WRAP_CONTENT);
-            leftParams.setMargins(0, 15, 0, 15);
-            leftParams.weight = 1;
-            leftSide.setLayoutParams(leftParams);
-
-            //text view type
-            tv_time = new TextView(this);
-            tv_time.setText(transaction.getTime());
-            tv_time.setTextSize(displayWidth * displayHeight / 100000 - 8);
-            tv_time.setTypeface(Typeface.MONOSPACE, Typeface.NORMAL);
-
-            tv_time.setTextColor(Color.BLACK);
-            tv_time.setGravity(Gravity.BOTTOM);
-
-            // Right Side Display (Name and type)
-            LinearLayout rightSide = new LinearLayout(this);
-            rightSide.setOrientation(LinearLayout.VERTICAL);
-            LinearLayout.LayoutParams rightParams = new LinearLayout.LayoutParams((int) (singleTransaction.getResources().getDisplayMetrics().widthPixels * 0.5), LinearLayout.LayoutParams.MATCH_PARENT);
-            //rightParams.gravity = Gravity.RIGHT;
-            rightParams.setMargins(0, 15, 0, 15);
-            rightParams.weight = 2;
-            rightSide.setLayoutParams(leftParams);
-
-            tv_type = new TextView(this);
-            tv_type.setText(transaction.getType());
-            tv_type.setTextSize(displayWidth * displayHeight / 100000 - 8);
-            tv_type.setTypeface(Typeface.MONOSPACE, Typeface.NORMAL);
-            tv_type.setTextColor(Color.BLACK);
-            tv_type.setGravity(Gravity.RIGHT);
-
-            gl.addView(tv_name);
-            gl.addView(tv_amount);
-            leftSide.addView(tv_time);
-            rightSide.addView(tv_type);
-
-            LinearLayout bottomLayout = new LinearLayout(this);
-            bottomLayout.setOrientation(LinearLayout.HORIZONTAL);
-            bottomLayout.addView(leftSide);
-            bottomLayout.addView(rightSide);
-
-            wholeTransaction.addView(gl);
-            wholeTransaction.addView(bottomLayout);
-
-            View separator = new View(this);
-            separator.setBackgroundColor(Color.BLACK);
-            separator.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (int) (displayHeight * 0.001)));
-            wholeTransaction.addView(separator);
-            wholeTransaction.setPadding(0,0,0,0);
-
-        }
-        ScrollView scrollView = new ScrollView(this);
-        scrollView.addView(wholeTransaction);
-
-        //scrollView.setPadding((int)(displayWidth * 0.05), (int)(displayHeight * 0.01),0, (int)(displayHeight * 0.01));
-        //setContentView(scrollView);
-        return scrollView;
-    }
-
 }

@@ -16,8 +16,8 @@
         android:background="@color/black"
         app:backgroundTint="@color/light_grey"
         android:text="@string/sevenNum"
-        android:textColor="@color/white"
-        android:textSize="25sp" />
+        android:textColor="@color/black"
+        android:textSize="30sp" />
 
     <Button
         android:id="@+id/eight"
@@ -30,8 +30,8 @@
         android:background="@color/black"
         app:backgroundTint="@color/light_grey"
         android:text="@string/eightNum"
-        android:textColor="@color/white"
-        android:textSize="25sp" />
+        android:textColor="@color/black"
+        android:textSize="30sp" />
 
     <Button
         android:id="@+id/nine"
@@ -43,8 +43,8 @@
         android:background="@color/black"
         app:backgroundTint="@color/light_grey"
         android:text="@string/nineNum"
-        android:textColor="@color/white"
-        android:textSize="25sp" />
+        android:textColor="@color/black"
+        android:textSize="30sp" />
 
 
 
@@ -76,8 +76,8 @@
         android:background="@color/black"
         app:backgroundTint="@color/light_grey"
         android:text="@string/fourNum"
-        android:textColor="@color/white"
-        android:textSize="25sp" />
+        android:textColor="@color/black"
+        android:textSize="30sp" />
 
     <Button
         android:id="@+id/five"
@@ -91,8 +91,8 @@
         android:background="@color/black"
         app:backgroundTint="@color/light_grey"
         android:text="@string/fiveNum"
-        android:textColor="@color/white"
-        android:textSize="25sp" />
+        android:textColor="@color/black"
+        android:textSize="30sp" />
 
     <Button
         android:id="@+id/six"
@@ -106,8 +106,8 @@
         android:background="@color/black"
         app:backgroundTint="@color/light_grey"
         android:text="@string/sixNum"
-        android:textColor="@color/white"
-        android:textSize="25sp" />
+        android:textColor="@color/black"
+        android:textSize="30sp"/>
 
     <Button
         android:id="@+id/clear"
@@ -135,8 +135,8 @@
         android:background="@color/black"
         app:backgroundTint="@color/light_grey"
         android:text="@string/oneNum"
-        android:textColor="@color/white"
-        android:textSize="25sp" />
+        android:textColor="@color/black"
+        android:textSize="30sp" />
 
     <Button
         android:id="@+id/two"
@@ -150,8 +150,8 @@
         android:background="@color/black"
         app:backgroundTint="@color/light_grey"
         android:text="@string/twoNum"
-        android:textColor="@color/white"
-        android:textSize="26sp" />
+        android:textColor="@color/black"
+        android:textSize="30sp" />
 
     <Button
         android:id="@+id/three"
@@ -165,8 +165,8 @@
         android:background="@color/black"
         app:backgroundTint="@color/light_grey"
         android:text="@string/threeNum"
-        android:textColor="@color/white"
-        android:textSize="25sp" />
+        android:textColor="@color/black"
+        android:textSize="30sp" />
 
     <Button
         android:id="@+id/enter"
@@ -182,7 +182,7 @@
         app:backgroundTint="@color/green"
         android:text="Enter"
         android:textColor="@color/white"
-        android:textSize="15sp" />
+        android:textSize="20sp" />
 
 
 
@@ -199,8 +199,8 @@
         android:background="@color/black"
         app:backgroundTint="@color/light_grey"
         android:text="@string/zeroNum"
-        android:textColor="@color/white"
-        android:textSize="25sp" />
+        android:textColor="@color/black"
+        android:textSize="30sp" />
 
     <Button
         android:id="@+id/dot"
@@ -214,8 +214,8 @@
         android:background="@color/black"
         app:backgroundTint="@color/light_grey"
         android:text="@string/dotSymbol"
-        android:textColor="@color/white"
-        android:textSize="25sp" />
+        android:textColor="@color/black"
+        android:textSize="30sp" />
 
 
 

@@ -7,20 +7,20 @@
     android:orientation="vertical"
     tools:context=".fragment.ReceiveFragment">
 
+  <include
+      layout="@layout/inputs_layout"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginBottom="3dp"/>
+
+  <RelativeLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content">
+
     <include
-        layout="@layout/inputs_layout"
+        layout="@layout/buttons_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="3dp"/>
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <include
-            layout="@layout/buttons_layout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-    </RelativeLayout>
+        android:layout_height="match_parent" />
+  </RelativeLayout>
 
 </LinearLayout>

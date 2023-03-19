@@ -10,13 +10,13 @@
     tools:context=".Login">
 
     <TextView
-        android:textSize="20sp"
+        android:textSize="40sp"
         android:textStyle="bold"
         android:gravity="center"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="20dp"
-        android:text="Login" />
+        android:text="Log In" />
 
     <TextView
         android:textSize="15sp"

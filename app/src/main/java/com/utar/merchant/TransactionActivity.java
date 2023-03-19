@@ -215,7 +215,6 @@ public class TransactionActivity extends AppCompatActivity {
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
 
         View view = getLayoutInflater().inflate(R.layout.layout_date_picker, null);
-        TextView tv_cancel = view.findViewById(R.id.date_tv_cancel);
         TextView tv_submit = view.findViewById(R.id.date_tv_submit);
         tv_startDate = view.findViewById(R.id.picker_startDate);
         tv_endDate = view.findViewById(R.id.picker_endDate);
@@ -231,13 +230,6 @@ public class TransactionActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 endDatePickerDialog.show();
-            }
-        });
-
-        tv_cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
             }
         });
 

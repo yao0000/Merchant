@@ -5,7 +5,8 @@ import java.util.List;
 public class Account{
     private String name;
     private String email;
-    private List<Transaction> transactionList;
+    private String balance;
+
 
     public Account(){
 
@@ -14,6 +15,8 @@ public class Account{
     public Account(String name, String email) {
         this.name = name;
         this.email = email;
+        this.balance = "0.00";
+
     }
 
     public String getName() {
@@ -22,5 +25,9 @@ public class Account{
 
     public String getEmail() {
         return email;
+    }
+
+    public String getBalance() {
+        return balance;
     }
 }

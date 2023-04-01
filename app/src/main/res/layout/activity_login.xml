@@ -27,9 +27,13 @@
     <EditText
         android:id="@+id/login_email"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="60dp"
         android:hint="Enter Email"
-
+        android:drawableStart="@drawable/custom_email_icon"
+        android:drawablePadding="12dp"
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp"
+        android:background="@drawable/custom_input"
         android:inputType="textEmailAddress" />
 
     <TextView
@@ -39,13 +43,20 @@
         android:layout_marginTop="10dp"
         android:text="Password" />
 
+
     <EditText
         android:id="@+id/login_password"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="60dp"
         android:hint="Enter Password"
+        android:drawableStart="@drawable/custom_lock_icon"
+        android:drawablePadding="12dp"
+        android:background="@drawable/custom_input"
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp"
         android:ems="10"
-        android:inputType="textPassword" />
+        android:inputType="textPassword"
+        app:passwordToggleEnabled="true"/>
 
     <ProgressBar
         android:id="@+id/login_progressBar"

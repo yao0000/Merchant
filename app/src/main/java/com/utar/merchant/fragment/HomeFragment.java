@@ -44,6 +44,7 @@ public class HomeFragment extends Fragment {
     ImageView iv_reload, iv_withdraw, iv_history;
     String userID;
     DatabaseReference databaseReference;
+    DatabaseReference transactionDatabaseReference;
     Account account;
 
     View reloadWithdrawPanel;
@@ -69,6 +70,8 @@ public class HomeFragment extends Fragment {
         String userID = FirebaseAuth.getInstance().getUid();
         FirebaseDatabase.getInstance().getReference("user").child(userID).keepSynced(true);
         databaseReference = FirebaseDatabase.getInstance().getReference("user").child(userID);
+        transactionDatabaseReference = FirebaseDatabase.getInstance().getReference("transactions").child(userID);
+
 
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -127,6 +130,10 @@ public class HomeFragment extends Fragment {
         btn_panel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(et_amount.getText().toString().isEmpty()){
+                    Toast.makeText(getContext(), "Please enter amount", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 progressBar.setVisibility(View.VISIBLE);
 
                 double balance = Double.parseDouble(account.getBalance());
@@ -144,6 +151,9 @@ public class HomeFragment extends Fragment {
                                 @Override
                                 public void onSuccess(Void unused) {
                                     progressBar.setVisibility(View.GONE);
+                                    Transaction transactionReload = new Transaction("Reload", Double.parseDouble(sum), Transaction.RELOAD);
+                                    transactionDatabaseReference.push().setValue(transactionReload);
+                                    Log.d("HomeFragment", "Pushing Done");
                                     Toast.makeText(getContext(), "Reload Success", Toast.LENGTH_SHORT).show();
                                     popupWindow.dismiss();
                                 }
@@ -171,6 +181,8 @@ public class HomeFragment extends Fragment {
                                 @Override
                                 public void onSuccess(Void unused) {
                                     progressBar.setVisibility(View.GONE);
+                                    Transaction transactionWithdraw = new Transaction(WITHDRAW, Double.parseDouble(finalValue), Transaction.WITHDRAW);
+                                    transactionDatabaseReference.push().setValue(transactionWithdraw);
                                     Toast.makeText(getContext(), "Withdraw Success", Toast.LENGTH_SHORT).show();
                                     popupWindow.dismiss();
                                 }

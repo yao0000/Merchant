@@ -48,10 +48,9 @@ public class MainActivity extends AppCompatActivity {
                     fragment = new HomeFragment();
                     break;
 
-                case R.id.profile:
+                case R.id.receive:
                     fragment = new ReceiveFragment();
                     break;
-
                 case R.id.settings:
                     fragment = new SettingsFragment();
                     break;

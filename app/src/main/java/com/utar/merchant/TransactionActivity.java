@@ -1,10 +1,12 @@
 package com.utar.merchant;
 
+import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.Layout;
 import android.util.Log;
@@ -33,9 +35,12 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class TransactionActivity extends AppCompatActivity {
+    private static final String TAG = "TransactionActivity";
     private DatabaseReference databaseReference;
     private List<Transaction> transactionList = new ArrayList<>(), searchList;
 
@@ -57,12 +62,12 @@ public class TransactionActivity extends AppCompatActivity {
         setContentView(R.layout.activity_transaction);
 
         //System Initialise
-        getSupportActionBar().hide();
+
         displayHeight = getResources().getDisplayMetrics().heightPixels;
         displayWidth = getResources().getDisplayMetrics().widthPixels;
         String userID = FirebaseAuth.getInstance().getUid();
-        FirebaseDatabase.getInstance().getReference("user").child(userID).keepSynced(true);
-        databaseReference = FirebaseDatabase.getInstance().getReference("user");
+        //FirebaseDatabase.getInstance().getReference("user").child(userID).keepSynced(true);
+        databaseReference = FirebaseDatabase.getInstance().getReference("transactions");
         blue = getResources().getColor(R.color.soft_blue);
         initDatePickDialog();
 
@@ -86,15 +91,23 @@ public class TransactionActivity extends AppCompatActivity {
             }
         });
 
-        databaseReference.child(userID).child("transactions").addValueEventListener(new ValueEventListener() {
+        databaseReference.child(userID).addValueEventListener(new ValueEventListener() {
+
             @Override
             public void onDataChange(DataSnapshot snapshot) {
                 if(snapshot.exists()) {
                     transactionList = new ArrayList<>();
                     for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                         Transaction transaction = dataSnapshot.getValue(Transaction.class);
+                        Log.d(TAG, transaction.getTime());
                         transactionList.add(transaction);
                     }
+
+                    //sorting
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                        transactionList.sort(Comparator.comparing(Transaction::getTimestamp));
+                    }
+
                     //setView(showList(transactionList));
                     setTransactionView(transactionList);
                     transactionScrollView.addView(listLayout);
@@ -155,7 +168,7 @@ public class TransactionActivity extends AppCompatActivity {
             tv_amount.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
             tv_amount.setLayoutParams(new ViewGroup.LayoutParams((int) (displayWidth * 0.35), ViewGroup.LayoutParams.MATCH_PARENT));
             tv_amount.setGravity(Gravity.RIGHT);
-            if(transaction.getType().equals(Transaction.PAYMENT) || transaction.getType().equals(Transaction.TRANSFER_OUT)){
+            if(transaction.getType().equals(Transaction.PAYMENT) || transaction.getType().equals(Transaction.TRANSFER_OUT) || transaction.getType().equals(Transaction.WITHDRAW)){
                 tv_amount.setText(String.format("- RM%.2f", transaction.getAmount()));
                 tv_amount.setTextColor(getResources().getColor(R.color.dark_red));
             }

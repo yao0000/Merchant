@@ -12,6 +12,7 @@ public class Transaction {
   public final static String PAYMENT = "Payment";                 //Red Color
   public final static String TRANSFER_IN = "Receive Transfer";    //Green Color
   public final static String TRANSFER_OUT = "Transfer Out";       //Red Color
+  public final static String WITHDRAW = "Withdraw";               //Red
 
   private String objectName;
   private double amount;

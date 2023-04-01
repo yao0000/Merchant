@@ -7,12 +7,14 @@
         android:icon="@drawable/ic_baseline_home_24"/>
 
     <item
-        android:id="@+id/profile"
-        android:icon="@drawable/ic_baseline_person_24"
-        android:title="Profile" />
+        android:id="@+id/receive"
+        android:icon="@drawable/ic_baseline_payment_24"
+        android:title="Receive" />
 
     <item
         android:id="@+id/settings"
         android:icon="@drawable/ic_baseline_settings_24"
         android:title="Settings" />
+
+
 </menu>

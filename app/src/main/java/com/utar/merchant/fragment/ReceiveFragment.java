@@ -1,5 +1,8 @@
 package com.utar.merchant.fragment;
 
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -12,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.utar.merchant.R;
+import com.utar.merchant.ReceiveActivity;
 
 import java.util.regex.Pattern;
 
@@ -53,8 +57,19 @@ public class ReceiveFragment extends Fragment {
         String exp = resultTxtView.getText().toString();
 
         if (R.id.enter == id) {
+          if(resultTxtView.length() == 0){
+            Toast.makeText(getContext(), "Please enter amount", Toast.LENGTH_SHORT).show();
+            return;
+          }
+          SharedPreferences pref = getActivity().getSharedPreferences("MySharedPreferences", Context.MODE_PRIVATE);
+          SharedPreferences.Editor prefEditor = pref.edit();
 
-        } else if (R.id.zero == id) {
+          prefEditor.putString("amount", String.valueOf(resultTxtView.getText()));
+          prefEditor.commit();
+
+          startActivity(new Intent(getContext(), ReceiveActivity.class));
+        }
+        else if (R.id.zero == id) {
           generateExpression("0");
         } else if (R.id.one == id) {
           generateExpression("1");

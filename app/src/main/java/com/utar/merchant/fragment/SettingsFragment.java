@@ -9,6 +9,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.database.DatabaseReference;
@@ -24,7 +26,8 @@ import com.utar.merchant.data.Transaction;
 
 public class SettingsFragment extends Fragment {
 
-    Button btnLogout;
+
+    TextView tv_logout;
     View v;
 
 
@@ -34,9 +37,19 @@ public class SettingsFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_settings, container, false);
 
         String userID = FirebaseAuth.getInstance().getUid();
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("user").child(userID).child("transactions");
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("transactions").child(userID);
 
-        btnLogout = v.findViewById(R.id.logout);
+        tv_logout = v.findViewById(R.id.setting_tv_logout);
+        tv_logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FirebaseAuth.getInstance().signOut();
+                Intent intent = new Intent(getContext(), Login.class);
+                startActivity(intent);
+                Toast.makeText(getContext(), "Log out successfully", Toast.LENGTH_LONG).show();
+                getActivity().finish();
+            }
+        });
 
         Button btn_push = v.findViewById(R.id.push);
 
@@ -57,27 +70,7 @@ public class SettingsFragment extends Fragment {
             }
         });
 
-        Button btn_t = v.findViewById(R.id.transaction);
-        btn_t.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(getContext(), TransactionActivity.class));
-            }
-        });
 
-
-
-
-        //Setting Page
-        btnLogout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FirebaseAuth.getInstance().signOut();
-                Intent intent = new Intent(getContext(), Login.class);
-                startActivity(intent);
-                getActivity().finish();
-            }
-        });
 
 
         // Inflate the layout for this fragment

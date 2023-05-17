@@ -8,8 +8,19 @@
     android:orientation="vertical"
     tools:context=".ReceiveActivity">
 
+    <TextView
+        android:id="@+id/receive_amount"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:layout_marginTop="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:text="Receiving: N/A" />
 
     <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/receive_animation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:lottie_autoPlay="true"
@@ -17,6 +28,7 @@
         app:lottie_rawRes="@raw/nfc_scan_j"/>
 
     <TextView
+        android:id="@+id/receive_status"
         android:textSize="30sp"
         android:textStyle="bold"
         android:gravity="center"

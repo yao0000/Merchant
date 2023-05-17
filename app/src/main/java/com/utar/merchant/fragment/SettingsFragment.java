@@ -51,7 +51,7 @@ public class SettingsFragment extends Fragment {
             }
         });
 
-        Button btn_push = v.findViewById(R.id.push);
+        /*Button btn_push = v.findViewById(R.id.push);
 
         btn_push.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -68,7 +68,7 @@ public class SettingsFragment extends Fragment {
                 Transaction t = new Transaction("ABCDEFGHIJKLMNOPQRSTUVWXYZ ABCDEFGHIJKLMNOPQRSTUVWXYZ", 100, Transaction.TRANSFER_IN);
                 databaseReference.push().setValue(t);
             }
-        });
+        });*/
 
 
 

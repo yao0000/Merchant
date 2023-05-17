@@ -3,8 +3,10 @@ package com.utar.merchant.fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.nfc.NfcAdapter;
 import android.os.Bundle;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -14,6 +16,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.utar.merchant.MainActivity;
 import com.utar.merchant.R;
 import com.utar.merchant.ReceiveActivity;
 
@@ -61,13 +64,29 @@ public class ReceiveFragment extends Fragment {
             Toast.makeText(getContext(), "Please enter amount", Toast.LENGTH_SHORT).show();
             return;
           }
-          SharedPreferences pref = getActivity().getSharedPreferences("MySharedPreferences", Context.MODE_PRIVATE);
-          SharedPreferences.Editor prefEditor = pref.edit();
 
-          prefEditor.putString("amount", String.valueOf(resultTxtView.getText()));
-          prefEditor.commit();
+          NfcAdapter nfcAdapter = NfcAdapter.getDefaultAdapter(getContext());
+          if(nfcAdapter.isEnabled()) {
+            SharedPreferences pref = getActivity().getSharedPreferences("MySharedPreferences", Context.MODE_PRIVATE);
+            SharedPreferences.Editor prefEditor = pref.edit();
 
-          startActivity(new Intent(getContext(), ReceiveActivity.class));
+            prefEditor.putString("amount", String.valueOf(resultTxtView.getText()));
+            prefEditor.commit();
+
+            startActivity(new Intent(getContext(), ReceiveActivity.class));
+            getActivity().finish();
+          }
+          else{
+            new AlertDialog.Builder(getContext())
+                    .setTitle("NFC is disabled")
+                    .setMessage("Please enable NFC module")
+                    .setPositiveButton("Proceed to enable", (dialog, which) -> startActivity(new Intent("android.settings.NFC_SETTINGS")))
+                    .setNegativeButton("Cancel", null)
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .show();
+          }
+
+
         }
         else if (R.id.zero == id) {
           generateExpression("0");

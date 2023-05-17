@@ -1,26 +1,42 @@
 <resources>
-    <string name="app_name">Merchant</string>
+    <string name="app_name">Quick Merchant</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title">E-wallet Balance</string>
 
+    <!-- Login / Registration / Forgot Password -->
+    <!-- Share -->
+    <string name="email">Email</string>
+    <string name="email_hint">Enter Email</string>
+    <string name="password">Password</string>
+    <string name="password_hint">Enter Password</string>
+    <!-- Login -->
+    <string name="login">LOG IN</string>
+    <string name="forgot_password">Forgot Password?</string>
+    <string name="to_register">Click to Register</string>
+    <!-- Registration -->
+    <string name="registration">Registration</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="confirm_password_hint">Enter Confirm Password</string>
+    <string name="name">Name</string>
+    <string name="name_hint">Enter Name</string>
+    <string name="register">REGISTER</string>
+    <string name="to_login">Click to Login</string>
+
+
+
     <!--  Button Names  -->
     <string name="clearTxt">C</string>
-
     <string name="backspace">\u232b</string>
-
     <string name="sevenNum">7</string>
     <string name="eightNum">8</string>
     <string name="nineNum">9</string>
-
     <string name="fourNum">4</string>
     <string name="fiveNum">5</string>
     <string name="sixNum">6</string>
-
     <string name="oneNum">1</string>
     <string name="twoNum">2</string>
     <string name="threeNum">3</string>
-
     <string name="zeroNum">0</string>
     <string name="dotSymbol">.</string>
 </resources>

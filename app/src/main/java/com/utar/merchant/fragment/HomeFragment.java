@@ -61,6 +61,8 @@ public class HomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_home, container, false);
 
+
+
         iv_reload = v.findViewById(R.id.home_iv_reload);
         iv_withdraw = v.findViewById(R.id.home_iv_withdraw);
         iv_history = v.findViewById(R.id.home_iv_history);
@@ -151,7 +153,7 @@ public class HomeFragment extends Fragment {
                                 @Override
                                 public void onSuccess(Void unused) {
                                     progressBar.setVisibility(View.GONE);
-                                    Transaction transactionReload = new Transaction("Reload", Double.parseDouble(sum), Transaction.RELOAD);
+                                    Transaction transactionReload = new Transaction("Reload", amount, Transaction.RELOAD);
                                     transactionDatabaseReference.push().setValue(transactionReload);
                                     Log.d("HomeFragment", "Pushing Done");
                                     Toast.makeText(getContext(), "Reload Success", Toast.LENGTH_SHORT).show();
@@ -181,7 +183,7 @@ public class HomeFragment extends Fragment {
                                 @Override
                                 public void onSuccess(Void unused) {
                                     progressBar.setVisibility(View.GONE);
-                                    Transaction transactionWithdraw = new Transaction(WITHDRAW, Double.parseDouble(finalValue), Transaction.WITHDRAW);
+                                    Transaction transactionWithdraw = new Transaction(WITHDRAW, amount, Transaction.WITHDRAW);
                                     transactionDatabaseReference.push().setValue(transactionWithdraw);
                                     Toast.makeText(getContext(), "Withdraw Success", Toast.LENGTH_SHORT).show();
                                     popupWindow.dismiss();

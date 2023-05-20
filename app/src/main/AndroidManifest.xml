@@ -4,12 +4,13 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.NFC" />
+
     <uses-feature
         android:name="android.hardware.nfc"
         android:required="true" />
 
     <application
-        android:name=".data.MyApplication"
+        android:name=".MyApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -17,10 +18,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Material3.Light">
         <activity
-            android:name=".ui.ReceiveActivity"
+            android:name=".ui.settings.LanguageActivity"
+            android:exported="false"
+            android:theme="@style/Theme.Material3.Light.NoActionBar"/>
+        <activity
+            android:name=".ui.receive.ReceiveActivity"
             android:exported="false"
             android:theme="@style/Theme.Material3.Light.NoActionBar">
-
             <intent-filter>
                 <action android:name="android.nfc.action.TECH_DISCOVERED" />
             </intent-filter>
@@ -34,9 +38,9 @@
             android:exported="false"
             android:theme="@style/Theme.Material3.Light.NoActionBar" />
         <activity
-            android:name=".ui.TransactionActivity"
+            android:name=".ui.home.TransactionActivity"
             android:exported="false"
-            android:theme="@style/Theme.Material3.Light.NoActionBar"/>
+            android:theme="@style/Theme.Material3.Light.NoActionBar" />
         <activity
             android:name=".Register"
             android:exported="false"

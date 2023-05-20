@@ -1,4 +1,4 @@
-package com.utar.merchant.fragment;
+package com.utar.merchant.ui.receive;
 
 import android.content.Context;
 import android.content.Intent;
@@ -17,7 +17,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.utar.merchant.R;
-import com.utar.merchant.ui.ReceiveActivity;
 
 import java.util.regex.Pattern;
 
@@ -60,7 +59,7 @@ public class ReceiveFragment extends Fragment {
 
         if (R.id.enter == id) {
           if(resultTxtView.length() == 0){
-            Toast.makeText(getContext(), "Please enter amount", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), getString(R.string.require_amount), Toast.LENGTH_SHORT).show();
             return;
           }
 
@@ -77,10 +76,10 @@ public class ReceiveFragment extends Fragment {
           }
           else{
             new AlertDialog.Builder(getContext())
-                    .setTitle("NFC is disabled")
-                    .setMessage("Please enable NFC module")
-                    .setPositiveButton("Proceed to enable", (dialog, which) -> startActivity(new Intent("android.settings.NFC_SETTINGS")))
-                    .setNegativeButton("Cancel", null)
+                    .setTitle(getString(R.string.nfc_disable_alert))
+                    .setMessage(getString(R.string.nfc_enable_alert))
+                    .setPositiveButton(getString(R.string.proceed_to_enable), (dialog, which) -> startActivity(new Intent("android.settings.NFC_SETTINGS")))
+                    .setNegativeButton(getString(R.string.cancel), null)
                     .setIcon(android.R.drawable.ic_dialog_alert)
                     .show();
           }

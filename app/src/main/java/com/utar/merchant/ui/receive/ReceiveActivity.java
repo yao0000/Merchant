@@ -1,4 +1,4 @@
-package com.utar.merchant.ui;
+package com.utar.merchant.ui.receive;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -53,7 +53,7 @@ public class ReceiveActivity extends AppCompatActivity implements HCECardReader.
         lottieAnimationView = findViewById(R.id.receive_animation);
         tv_receive_status = findViewById(R.id.receive_status);
         tv_receive_amount = findViewById(R.id.receive_amount);
-        tv_receive_amount.setText(String.format("Receiving: RM%.2f",getAmount()));
+        tv_receive_amount.setText(String.format(getString(R.string.receiving) + ": RM%.2f",getAmount()));
         btn_cancel = findViewById(R.id.nfc_cancel);
 
         btn_cancel.setOnClickListener(new View.OnClickListener() {

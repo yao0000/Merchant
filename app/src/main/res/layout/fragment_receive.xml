@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="@color/white_or"
     android:orientation="vertical"
-    tools:context=".fragment.ReceiveFragment">
+    tools:context=".ui.receive.ReceiveFragment">
 
   <include
       layout="@layout/inputs_layout"

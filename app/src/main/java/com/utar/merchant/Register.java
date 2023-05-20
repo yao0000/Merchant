@@ -1,18 +1,13 @@
 package com.utar.merchant;
 
-
-
-
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -31,8 +26,6 @@ public class Register extends AppCompatActivity {
     String email, password, confirmPassword, name;
 
     ProgressBar progressBar;
-    TextView tvLoginPage;
-
     FirebaseAuth mAuth;
     DatabaseReference databaseReference;
 
@@ -60,14 +53,8 @@ public class Register extends AppCompatActivity {
 
         btnReg = findViewById(R.id.btn_register);
         progressBar = findViewById(R.id.reg_progressBar);
-        tvLoginPage = findViewById(R.id.reg_loginNow);
 
-        tvLoginPage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        findViewById(R.id.reg_loginNow).setOnClickListener(v -> finish());
 
         btnReg.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -78,29 +65,28 @@ public class Register extends AppCompatActivity {
                 confirmPassword = String.valueOf(editTextConfirmPassword.getText());
                 name = String.valueOf(editTextName.getText());
 
-
                 if(email.trim().isEmpty()){
-                    editTextEmail.setError("This field cannot be blank");
+                    editTextEmail.setError(getString(R.string.require_field));
                     return;
                 }
 
                 if(password.isEmpty()){
-                    editTextPassword.setError("This field cannot be blank");
+                    editTextPassword.setError(getString(R.string.require_field));
                     return;
                 }
 
                 if(confirmPassword.isEmpty()){
-                    editTextConfirmPassword.setError("This field cannot be blank");
+                    editTextConfirmPassword.setError(getString(R.string.require_field));
                     return;
                 }
 
                 if(name.isEmpty()){
-                    editTextName.setError("This field cannot be blank");
+                    editTextName.setError(getString(R.string.require_field));
                     return;
                 }
 
                 if(!password.equals(confirmPassword)){
-                    editTextConfirmPassword.setError("Password and Confirm Password not match");
+                    editTextConfirmPassword.setError(getString(R.string.mismatch_password));
                     return;
                 }
 
@@ -112,9 +98,8 @@ public class Register extends AppCompatActivity {
                                 progressBar.setVisibility(View.GONE);
 
                                 if (task.isSuccessful()) {
-
                                     // Sign in success, update UI with the signed-in user's information
-                                    toast("createUserWithEmail:success");
+                                    toast(getString(R.string.register_successfully));
                                     startActivity(new Intent(getApplicationContext(), MainActivity.class));
 
                                     //Firebase perform
@@ -126,20 +111,10 @@ public class Register extends AppCompatActivity {
                                     databaseReference.child(userID).setValue(account);
 
                                     FirebaseAuth.getInstance().signOut();
-
-
-
                                     finish();
 
-                                    //FirebaseUser user = mAuth.getCurrentUser();
-
                                 } else {
-
-                                    // If sign in fails, display a message to the user.
-                                    toast("createUserWithEmail:failure");
-
-
-
+                                    toast(getString(R.string.fail_register));
                                 }
                             }
                         });

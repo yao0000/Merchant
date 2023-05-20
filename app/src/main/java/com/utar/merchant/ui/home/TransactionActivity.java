@@ -1,4 +1,4 @@
-package com.utar.merchant.ui;
+package com.utar.merchant.ui.home;
 
 import android.annotation.TargetApi;
 import android.app.AlertDialog;
@@ -38,7 +38,7 @@ import java.util.Comparator;
 import java.util.List;
 
 import com.utar.merchant.R;
-import com.utar.merchant.ui.transaction.TransactionViewHolder;
+import com.utar.merchant.ui.home.transaction.TransactionViewHolder;
 
 public class TransactionActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener{
     private static final String TAG = "TransactionActivity";
@@ -83,7 +83,7 @@ public class TransactionActivity extends AppCompatActivity implements DatePicker
                     displayList(transactionList);
                 }
                 else {
-                    toast("No record found");
+                    toast(getString(R.string.noRecord));
                 }
             }
             @Override
@@ -163,8 +163,8 @@ public class TransactionActivity extends AppCompatActivity implements DatePicker
                     long endTime = simpleDateFormat.parse(endDate).getTime();
                     if(startTime > endTime){
                         AlertDialog.Builder alertDialog = new AlertDialog.Builder(TransactionActivity.this);
-                        alertDialog.setTitle("Alert");
-                        alertDialog.setMessage("End date should be greater than Start date");
+                        alertDialog.setTitle(getString(R.string.alert));
+                        alertDialog.setMessage(getString(R.string.date_duration_error));
                         alertDialog.setPositiveButton( "OK",
                                 new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialogOwn, int which) {

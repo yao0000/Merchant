@@ -1,17 +1,14 @@
-package com.utar.merchant.ui.transaction;
+package com.utar.merchant.ui.home.transaction;
 
-import android.content.Context;
 import android.graphics.Color;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.utar.merchant.R;
-import com.utar.merchant.data.MyApplication;
+import com.utar.merchant.MyApplication;
 import com.utar.merchant.data.Transaction;
-import com.utar.merchant.ui.TransactionActivity;
 
 public class TransactionViewHolder extends RecyclerView.ViewHolder {
 
@@ -48,7 +45,29 @@ public class TransactionViewHolder extends RecyclerView.ViewHolder {
         tv_date.setTextSize(displayWidth * displayHeight / 100000 - 8);
         tv_date.setTextColor(Color.BLACK);
 
-        tv_type.setText(transaction.getType());
+        String type = transaction.getType();
+        String typeDisplay = "";
+
+        if (type.equals(Transaction.PAYMENT)) {
+            typeDisplay = app.getString(R.string.payment);
+        }
+        else if (type.equals(Transaction.TRANSFER_OUT)) {
+            typeDisplay = app.getString(R.string.transfer_out);
+        }
+        else if (type.equals(Transaction.RELOAD)) {
+            typeDisplay = app.getString(R.string.reload);
+        }
+        else if (type.equals(Transaction.WITHDRAW)) {
+            typeDisplay = app.getString(R.string.withdraw);
+        }
+        else if (type.equals(Transaction.TRANSFER_IN)) {
+            typeDisplay = app.getString(R.string.transfer_in);
+        }
+        else if (type.equals(Transaction.PAYMENT_RECEIVE)) {
+            typeDisplay = app.getString(R.string.payment_receive);
+        }
+
+        tv_type.setText(typeDisplay);
         tv_type.setTextSize(displayWidth * displayHeight / 100000 - 8);
         tv_type.setTextColor(Color.BLACK);
     }

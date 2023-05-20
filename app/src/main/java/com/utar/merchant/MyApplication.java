@@ -1,4 +1,4 @@
-package com.utar.merchant.data;
+package com.utar.merchant;
 
 import android.app.Application;
 

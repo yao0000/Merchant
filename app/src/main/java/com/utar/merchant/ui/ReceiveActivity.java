@@ -1,4 +1,4 @@
-package com.utar.merchant;
+package com.utar.merchant.ui;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -10,7 +10,6 @@ import android.nfc.NfcAdapter;
 
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.os.Looper;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -18,6 +17,8 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.airbnb.lottie.LottieAnimationView;
+import com.utar.merchant.MainActivity;
+import com.utar.merchant.R;
 import com.utar.merchant.cardreader.HCECardReader;
 
 

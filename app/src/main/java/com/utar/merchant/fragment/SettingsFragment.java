@@ -8,21 +8,15 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.utar.merchant.Login;
-import com.utar.merchant.MainActivity;
 import com.utar.merchant.R;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.utar.merchant.TransactionActivity;
-import com.utar.merchant.data.Transaction;
 
 public class SettingsFragment extends Fragment {
 

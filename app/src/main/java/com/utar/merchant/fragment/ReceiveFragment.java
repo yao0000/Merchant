@@ -16,9 +16,8 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.utar.merchant.MainActivity;
 import com.utar.merchant.R;
-import com.utar.merchant.ReceiveActivity;
+import com.utar.merchant.ui.ReceiveActivity;
 
 import java.util.regex.Pattern;
 

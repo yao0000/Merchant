@@ -66,4 +66,11 @@
     <string name="log_out_success">登出成功</string>
     <string name="log_out">登出</string>
     <string name="language">语言</string>
+    <string name="waiting_tag">等待NFC标签…</string>
+    <string name="please_wait">请稍等...</string>
+    <string name="processing">处理中</string>
+    <string name="payment_success">付款成功</string>
+    <string name="unknown_tag_detected">检测到未知标签</string>
+    <string name="tag_disconnected">标签断开连接</string>
+    <string name="communication_error">通信错误</string>
 </resources>

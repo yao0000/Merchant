@@ -66,7 +66,7 @@ public class HomeFragment extends Fragment {
             public void onDataChange(DataSnapshot snapshot) {
                 account = snapshot.getValue(Account.class);
                 tv_amount.setText("RM " + account.getBalance());
-                tv_name.setText(getString(R.string.welcome) + account.getName());
+                tv_name.setText(account.getName());
             }
 
             @Override

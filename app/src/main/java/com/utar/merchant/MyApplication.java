@@ -1,6 +1,8 @@
 package com.utar.merchant;
 
 import android.app.Application;
+import android.content.Context;
+import android.util.Log;
 
 
 import com.google.firebase.database.FirebaseDatabase;
@@ -32,4 +34,5 @@ public class MyApplication extends Application {
     public int getDisplayWidth() {
         return displayWidth;
     }
+
 }

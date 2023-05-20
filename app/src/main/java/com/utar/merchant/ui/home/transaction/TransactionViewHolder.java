@@ -1,6 +1,8 @@
 package com.utar.merchant.ui.home.transaction;
 
+import android.content.res.Resources;
 import android.graphics.Color;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -9,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.utar.merchant.R;
 import com.utar.merchant.MyApplication;
 import com.utar.merchant.data.Transaction;
+import com.utar.merchant.ui.home.TransactionActivity;
 
 public class TransactionViewHolder extends RecyclerView.ViewHolder {
 
@@ -16,7 +19,7 @@ public class TransactionViewHolder extends RecyclerView.ViewHolder {
     private final int displayHeight = MyApplication.getInstance().getDisplayHeight();
     private final int displayWidth = MyApplication.getInstance().getDisplayWidth();
 
-    private final MyApplication app = MyApplication.getInstance();
+    private TransactionActivity app;
 
     public TransactionViewHolder(View itemView) {
         super(itemView);
@@ -28,6 +31,7 @@ public class TransactionViewHolder extends RecyclerView.ViewHolder {
     }
 
     public void bind(Transaction transaction) {
+        app = TransactionActivity.getInstance();
         tv_object.setText(transaction.getObjectName());
         tv_object.setTextSize(displayWidth * displayHeight / 100000 - 5);
 
@@ -49,22 +53,22 @@ public class TransactionViewHolder extends RecyclerView.ViewHolder {
         String typeDisplay = "";
 
         if (type.equals(Transaction.PAYMENT)) {
-            typeDisplay = app.getString(R.string.payment);
+            typeDisplay = app.getIdString(R.string.payment);
         }
         else if (type.equals(Transaction.TRANSFER_OUT)) {
-            typeDisplay = app.getString(R.string.transfer_out);
+            typeDisplay = app.getIdString(R.string.transfer_out);
         }
         else if (type.equals(Transaction.RELOAD)) {
-            typeDisplay = app.getString(R.string.reload);
+            typeDisplay = app.getIdString(R.string.reload);
         }
         else if (type.equals(Transaction.WITHDRAW)) {
-            typeDisplay = app.getString(R.string.withdraw);
+            typeDisplay = app.getIdString(R.string.withdraw);
         }
         else if (type.equals(Transaction.TRANSFER_IN)) {
-            typeDisplay = app.getString(R.string.transfer_in);
+            typeDisplay = app.getIdString(R.string.transfer_in);
         }
         else if (type.equals(Transaction.PAYMENT_RECEIVE)) {
-            typeDisplay = app.getString(R.string.payment_receive);
+            typeDisplay = app.getIdString(R.string.payment_receive);
         }
 
         tv_type.setText(typeDisplay);

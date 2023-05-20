@@ -105,6 +105,15 @@
 
     <!-- Receive Activity -->
     <string name="receiving">Receiving</string>
+    <string name="waiting_tag">Waiting for NFC Tag...</string>
+
+    <!-- Card Reader Class -->
+    <string name="please_wait">Please wait...</string>
+    <string name="processing">Processing</string>
+    <string name="payment_success">Payment Sucessfully</string>
+    <string name="unknown_tag_detected">Unknown Tag Detected</string>
+    <string name="tag_disconnected">Tag Disconnected</string>
+    <string name="communication_error">Communication Error</string>
 
     <!-- Settings Fragment -->
     <string name="settings_title">Settings</string>

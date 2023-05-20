@@ -3,6 +3,7 @@ package com.utar.merchant.cardreader;
 import static android.content.Context.MODE_PRIVATE;
 
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.nfc.NfcAdapter;
 import android.nfc.Tag;
 import android.nfc.tech.IsoDep;
@@ -18,6 +19,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.utar.merchant.MyApplication;
 import com.utar.merchant.R;
 import com.utar.merchant.data.Account;
 import com.utar.merchant.data.Transaction;
@@ -57,7 +59,7 @@ public class HCECardReader implements NfcAdapter.ReaderCallback {
     private WeakReference<AccountCallback> mAccountCallback;
 
     public interface AccountCallback {
-        public void setStatusText(String msg);
+        public void setStatusText(int id);
         public void setAnimation(int rawRes, boolean repeat);
         public void countDownFinish();
         public double getAmount();
@@ -78,11 +80,13 @@ public class HCECardReader implements NfcAdapter.ReaderCallback {
             Log.e(TAG, "Tag is null object reference");
             return;
         }
+
         try{
 
             //connect to hce device
             isoDep.connect();
-            mAccountCallback.get().setStatusText("Please wait");
+
+            mAccountCallback.get().setStatusText(R.string.please_wait);
             Log.i(TAG, "Timeout: " + isoDep.getTimeout());
             isoDep.setTimeout(3600);
             Log.i(TAG, "Timeout: " + isoDep.getTimeout());
@@ -100,7 +104,7 @@ public class HCECardReader implements NfcAdapter.ReaderCallback {
 
             if(Arrays.equals(SELECT_OK_SW, statusWord)){
                 
-                mAccountCallback.get().setStatusText("Processing");
+                mAccountCallback.get().setStatusText(R.string.processing);
                 mAccountCallback.get().setAnimation(R.raw.nfc_processing, true);
 
                 String payeeID = new String(payload, "UTF-8");
@@ -119,7 +123,7 @@ public class HCECardReader implements NfcAdapter.ReaderCallback {
 
                             if(userBalance <  amount){
                                 Log.i(TAG, "Insufficient balance!");
-                                mAccountCallback.get().setStatusText("Insufficient Balance!");
+                                mAccountCallback.get().setStatusText(R.string.insufficient_balance);
                                 mAccountCallback.get().setAnimation(R.raw.card_fail, false);
                                 mAccountCallback.get().countDownFinish();
                                 try {
@@ -166,7 +170,7 @@ public class HCECardReader implements NfcAdapter.ReaderCallback {
                                             } catch (IOException e) {
                                                 e.printStackTrace();
                                             }
-                                            mAccountCallback.get().setStatusText("Payment Successful");
+                                            mAccountCallback.get().setStatusText(R.string.payment_success);
                                             mAccountCallback.get().setAnimation(R.raw.nfc_finish, false);
                                             mAccountCallback.get().countDownFinish();
                                         }
@@ -186,20 +190,20 @@ public class HCECardReader implements NfcAdapter.ReaderCallback {
             }
             else{
                 mAccountCallback.get().setAnimation(R.raw.card_fail, false);
-                mAccountCallback.get().setStatusText("Unknown Tag Detected");
+                mAccountCallback.get().setStatusText(R.string.unknown_tag_detected);
                 mAccountCallback.get().countDownFinish();
             }
 
             //isoDep.close();
         }catch (IOException e){
             Log.e(TAG, "IOException: " + e.getMessage());
-            mAccountCallback.get().setStatusText("Tag Disconnected");
+            mAccountCallback.get().setStatusText(R.string.tag_disconnected);
             mAccountCallback.get().setAnimation(R.raw.card_fail, false);
             mAccountCallback.get().countDownFinish();
         }
         catch (Exception e){
             Log.e(TAG, "Error communicating with the card: " + e.toString());
-            mAccountCallback.get().setStatusText("Error Communicating with the card!");
+            mAccountCallback.get().setStatusText(R.string.communication_error);
             mAccountCallback.get().setAnimation(R.raw.card_fail, false);
             mAccountCallback.get().countDownFinish();
         }

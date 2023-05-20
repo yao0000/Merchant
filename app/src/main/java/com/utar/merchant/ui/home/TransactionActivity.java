@@ -7,6 +7,7 @@ import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 import android.content.DialogInterface;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -52,10 +53,12 @@ public class TransactionActivity extends AppCompatActivity implements DatePicker
     private TextView tv_start_date, tv_end_date;
     private RecyclerView recyclerView;
 
+    private static TransactionActivity transactionActivity;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_transaction);
+        transactionActivity = this;
 
         recyclerView = findViewById(R.id.transaction_list);
         iv_filter = findViewById(R.id.iv_filter);
@@ -91,6 +94,14 @@ public class TransactionActivity extends AppCompatActivity implements DatePicker
                 toast(error.getMessage());
             }
         });
+    }
+
+    public static TransactionActivity getInstance(){
+        return transactionActivity;
+    }
+
+    public static String getIdString(int resId){
+        return transactionActivity.getString(resId);
     }
 
     private void displayList(List list){

@@ -69,6 +69,7 @@ public class ReceiveActivity extends AppCompatActivity implements HCECardReader.
     public void onBackPressed() {
         super.onBackPressed();
         startActivity(new Intent(this, MainActivity.class));
+        finish();
     }
 
     @Override
@@ -102,11 +103,11 @@ public class ReceiveActivity extends AppCompatActivity implements HCECardReader.
     }
 
     @Override
-    public void setStatusText(String msg) {
+    public void setStatusText(int id) {
         this.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                tv_receive_status.setText(msg);
+                tv_receive_status.setText(getString(id));
             }
         });
     }

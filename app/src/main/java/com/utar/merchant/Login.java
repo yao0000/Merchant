@@ -77,7 +77,7 @@ public class Login extends AppCompatActivity {
                     return;
                 }
 
-                if(password.isEmpty()){
+                if(password.trim().isEmpty()){
                     editTextPassword.setError(getResources().getString(R.string.require_field));
                     return;
                 }

@@ -10,6 +10,8 @@ import android.nfc.NfcAdapter;
 
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -127,7 +129,7 @@ public class ReceiveActivity extends AppCompatActivity implements HCECardReader.
     @Override
     public void countDownFinish() {
 
-        CountDownTimer countDownTimer = new CountDownTimer(5000, 1000) {
+        CountDownTimer countDownTimer = new CountDownTimer(3000, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
 
@@ -156,5 +158,32 @@ public class ReceiveActivity extends AppCompatActivity implements HCECardReader.
             Log.i(TAG, "strAmount: " + strAmount);
             return Double.parseDouble(strAmount);
         }
+    }
+
+    @Override
+    public void countDownReset() {
+        Handler handler = new Handler(Looper.getMainLooper());
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                CountDownTimer countDownTimer = new CountDownTimer(3000, 1000) {
+                    @Override
+                    public void onTick(long millisUntilFinished) {
+
+                    }
+
+                    @Override
+                    public void onFinish() {
+                        Log.i("Reset", "yes");
+                        lottieAnimationView.setAnimation(R.raw.nfc_scan_j);
+                        lottieAnimationView.loop(true);
+                        lottieAnimationView.playAnimation();
+
+                        tv_receive_status.setText(getString(R.string.waiting_tag));
+                    }
+                };
+                countDownTimer.start();
+            }
+        });
     }
 }

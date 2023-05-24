@@ -47,6 +47,8 @@
     <!-- Forgot Password -->
     <string name="reset_password_email_sent">The password reset email was successfully sent</string>
     <string name="forgot_password_title">Forgot Password?</string>
+    <string name="forgot_password_info">Enter your email address We will send you an email to reset your password</string>
+
 
 
     <!-- MainActivity -->
@@ -121,7 +123,6 @@
     <string name="log_out">Log Out</string>
     <string name="language">Language</string>
     <string name="require_field">This field cannot be blank</string>
-    <string name="forgot_password_info">Enter your email address We will send you an email to reset your password</string>
     <string name="back_to_login">Back to Login</string>
 
     <!-- Language Activity -->

@@ -63,7 +63,7 @@ public class HCECardReader implements NfcAdapter.ReaderCallback {
         public void setAnimation(int rawRes, boolean repeat);
         public void countDownFinish();
         public double getAmount();
-
+        public void countDownReset();
     }
 
     public HCECardReader(AccountCallback accountCallback) {
@@ -191,7 +191,7 @@ public class HCECardReader implements NfcAdapter.ReaderCallback {
             else{
                 mAccountCallback.get().setAnimation(R.raw.card_fail, false);
                 mAccountCallback.get().setStatusText(R.string.unknown_tag_detected);
-                mAccountCallback.get().countDownFinish();
+                mAccountCallback.get().countDownReset();
             }
 
             //isoDep.close();
@@ -199,13 +199,13 @@ public class HCECardReader implements NfcAdapter.ReaderCallback {
             Log.e(TAG, "IOException: " + e.getMessage());
             mAccountCallback.get().setStatusText(R.string.tag_disconnected);
             mAccountCallback.get().setAnimation(R.raw.card_fail, false);
-            mAccountCallback.get().countDownFinish();
+            mAccountCallback.get().countDownReset();
         }
         catch (Exception e){
             Log.e(TAG, "Error communicating with the card: " + e.toString());
             mAccountCallback.get().setStatusText(R.string.communication_error);
             mAccountCallback.get().setAnimation(R.raw.card_fail, false);
-            mAccountCallback.get().countDownFinish();
+            mAccountCallback.get().countDownReset();
         }
     }
 

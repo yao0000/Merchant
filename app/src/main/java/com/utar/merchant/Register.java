@@ -70,17 +70,17 @@ public class Register extends AppCompatActivity {
                     return;
                 }
 
-                if(password.isEmpty()){
+                if(password.trim().isEmpty()){
                     editTextPassword.setError(getString(R.string.require_field));
                     return;
                 }
 
-                if(confirmPassword.isEmpty()){
+                if(confirmPassword.trim().isEmpty()){
                     editTextConfirmPassword.setError(getString(R.string.require_field));
                     return;
                 }
 
-                if(name.isEmpty()){
+                if(name.trim().isEmpty()){
                     editTextName.setError(getString(R.string.require_field));
                     return;
                 }

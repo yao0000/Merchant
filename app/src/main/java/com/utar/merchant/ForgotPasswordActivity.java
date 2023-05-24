@@ -50,7 +50,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
                                 }
                                 else{
                                     progressBar.setVisibility(View.GONE);
-                                    toast(getString(R.string.err));
+                                    toast(getString(R.string.err) + ": " + task.getException());
                                 }
                             }
                         });

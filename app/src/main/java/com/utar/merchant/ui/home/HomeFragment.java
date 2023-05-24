@@ -152,7 +152,7 @@ public class HomeFragment extends Fragment {
                                 @Override
                                 public void onFailure(Exception e) {
                                     progressBar.setVisibility(View.GONE);
-                                    Toast.makeText(getContext(), getString(R.string.err), Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getContext(), getString(R.string.err) + ": " + e.getMessage(), Toast.LENGTH_SHORT).show();
                                     popupWindow.dismiss();
                                 }
                             });

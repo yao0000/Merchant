@@ -32,20 +32,20 @@
         <entry key="..\:/FYP_Development/Merchant4/app/src/main/res/drawable/shape.xml" value="0.27760416666666665" />
         <entry key="..\:/FYP_Development/Merchant4/app/src/main/res/drawable/shape2.xml" value="0.27760416666666665" />
         <entry key="..\:/FYP_Development/Merchant4/app/src/main/res/layout/activity_forgot_password.xml" value="0.25" />
-        <entry key="..\:/FYP_Development/Merchant4/app/src/main/res/layout/activity_language.xml" value="0.32072829131652664" />
-        <entry key="..\:/FYP_Development/Merchant4/app/src/main/res/layout/activity_login.xml" value="0.2" />
+        <entry key="..\:/FYP_Development/Merchant4/app/src/main/res/layout/activity_language.xml" value="0.1" />
+        <entry key="..\:/FYP_Development/Merchant4/app/src/main/res/layout/activity_login.xml" value="0.1" />
         <entry key="..\:/FYP_Development/Merchant4/app/src/main/res/layout/activity_main.xml" value="0.2" />
         <entry key="..\:/FYP_Development/Merchant4/app/src/main/res/layout/activity_receive.xml" value="0.2" />
-        <entry key="..\:/FYP_Development/Merchant4/app/src/main/res/layout/activity_register.xml" value="0.176" />
+        <entry key="..\:/FYP_Development/Merchant4/app/src/main/res/layout/activity_register.xml" value="0.1" />
         <entry key="..\:/FYP_Development/Merchant4/app/src/main/res/layout/activity_transaction.xml" value="0.2" />
         <entry key="..\:/FYP_Development/Merchant4/app/src/main/res/layout/buttons_layout.xml" value="0.26145833333333335" />
-        <entry key="..\:/FYP_Development/Merchant4/app/src/main/res/layout/fragment_home.xml" value="0.25" />
+        <entry key="..\:/FYP_Development/Merchant4/app/src/main/res/layout/fragment_home.xml" value="0.1" />
         <entry key="..\:/FYP_Development/Merchant4/app/src/main/res/layout/fragment_receive.xml" value="0.25" />
         <entry key="..\:/FYP_Development/Merchant4/app/src/main/res/layout/fragment_settings.xml" value="0.25" />
         <entry key="..\:/FYP_Development/Merchant4/app/src/main/res/layout/inputs_layout.xml" value="0.25" />
-        <entry key="..\:/FYP_Development/Merchant4/app/src/main/res/layout/item_transaction.xml" value="0.16911764705882354" />
-        <entry key="..\:/FYP_Development/Merchant4/app/src/main/res/layout/layout_date_picker.xml" value="0.176" />
-        <entry key="..\:/FYP_Development/Merchant4/app/src/main/res/layout/layout_reload_withdraw.xml" value="0.264" />
+        <entry key="..\:/FYP_Development/Merchant4/app/src/main/res/layout/item_transaction.xml" value="0.1" />
+        <entry key="..\:/FYP_Development/Merchant4/app/src/main/res/layout/layout_date_picker.xml" value="0.1" />
+        <entry key="..\:/FYP_Development/Merchant4/app/src/main/res/layout/layout_reload_withdraw.xml" value="0.1" />
         <entry key="..\:/FYP_Development/Merchant4/app/src/main/res/layout/transaction_item.xml" value="0.4" />
         <entry key="..\:/FYP_Development/Merchant4/app/src/main/res/menu/bottom_nav_menu.xml" value="0.25" />
         <entry key="..\:/FYP_Development/Merchant4/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.2713541666666667" />

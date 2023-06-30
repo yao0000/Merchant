@@ -24,6 +24,8 @@
     <string name="email_hint">Enter Email</string>
     <string name="password">Password</string>
     <string name="password_hint">Enter Password</string>
+    <string name="invalid_email">Invalid email format</string>
+    <string name="minimum_password_length">Password is required at least 6 characters</string>
 
     <!-- Login -->
     <string name="login">LOG IN</string>
@@ -31,6 +33,7 @@
     <string name="to_register">Click to Register</string>
     <string name="login_success">Login Successfully</string>
     <string name="login_fail">Login Failure</string>
+    <string name="invalid_account" translatable="false">Invalid Account</string>
 
     <!-- Registration -->
     <string name="registration">Registration</string>
@@ -48,7 +51,6 @@
     <string name="reset_password_email_sent">The password reset email was successfully sent</string>
     <string name="forgot_password_title">Forgot Password?</string>
     <string name="forgot_password_info">Enter your email address We will send you an email to reset your password</string>
-
 
 
     <!-- MainActivity -->

@@ -101,7 +101,6 @@ public class HCECardReader implements NfcAdapter.ReaderCallback {
             byte[] statusWord = {result[resultLength-2], result[resultLength-1]};
             byte[] payload = Arrays.copyOf(result, result.length - 2);
 
-
             if(Arrays.equals(SELECT_OK_SW, statusWord)){
                 
                 mAccountCallback.get().setStatusText(R.string.processing);
@@ -193,8 +192,6 @@ public class HCECardReader implements NfcAdapter.ReaderCallback {
                 mAccountCallback.get().setStatusText(R.string.unknown_tag_detected);
                 mAccountCallback.get().countDownReset();
             }
-
-            //isoDep.close();
         }catch (IOException e){
             Log.e(TAG, "IOException: " + e.getMessage());
             mAccountCallback.get().setStatusText(R.string.tag_disconnected);

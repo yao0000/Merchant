@@ -37,6 +37,12 @@ public class ForgotPasswordActivity extends AppCompatActivity {
                     et_email.setError(getString(R.string.require_field));
                     return;
                 }
+
+                if(!Register.isEmailFormatValid(email.trim())){
+                    et_email.setError(getString(R.string.invalid_email));
+                    return;
+                }
+
                 progressBar.setVisibility(View.VISIBLE);
                 FirebaseAuth.getInstance().sendPasswordResetEmail(email)
                         .addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -50,7 +56,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
                                 }
                                 else{
                                     progressBar.setVisibility(View.GONE);
-                                    toast(getString(R.string.err) + ": " + task.getException());
+                                    toast(getString(R.string.err) + ": " + task.getException().getMessage());
                                 }
                             }
                         });

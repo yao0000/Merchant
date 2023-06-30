@@ -32,23 +32,16 @@ public class ReceiveActivity extends AppCompatActivity implements HCECardReader.
     public HCECardReader hceCardReader;
 
     LottieAnimationView lottieAnimationView;
+    private CountDownTimer resetTimer;
 
     Button btn_cancel;
     TextView tv_receive_status, tv_receive_amount;
 
-    NfcAdapter nfcAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_receive);
-
-        nfcAdapter = NfcAdapter.getDefaultAdapter(this);
-        if(nfcAdapter != null){
-            if(!nfcAdapter.isEnabled()){
-
-            }
-        }
 
         hceCardReader = new HCECardReader(this);
 
@@ -65,6 +58,23 @@ public class ReceiveActivity extends AppCompatActivity implements HCECardReader.
                 finish();
             }
         });
+
+        resetTimer = new CountDownTimer(3000, 1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+
+            }
+
+            @Override
+            public void onFinish() {
+                Log.i("Reset", "yes");
+                lottieAnimationView.setAnimation(R.raw.nfc_scan_j);
+                lottieAnimationView.loop(true);
+                lottieAnimationView.playAnimation();
+
+                tv_receive_status.setText(getString(R.string.waiting_tag));
+            }
+        };
     }
 
     @Override
@@ -162,27 +172,12 @@ public class ReceiveActivity extends AppCompatActivity implements HCECardReader.
 
     @Override
     public void countDownReset() {
+        resetTimer.cancel();
         Handler handler = new Handler(Looper.getMainLooper());
         handler.post(new Runnable() {
             @Override
             public void run() {
-                CountDownTimer countDownTimer = new CountDownTimer(3000, 1000) {
-                    @Override
-                    public void onTick(long millisUntilFinished) {
-
-                    }
-
-                    @Override
-                    public void onFinish() {
-                        Log.i("Reset", "yes");
-                        lottieAnimationView.setAnimation(R.raw.nfc_scan_j);
-                        lottieAnimationView.loop(true);
-                        lottieAnimationView.playAnimation();
-
-                        tv_receive_status.setText(getString(R.string.waiting_tag));
-                    }
-                };
-                countDownTimer.start();
+                resetTimer.start();
             }
         });
     }

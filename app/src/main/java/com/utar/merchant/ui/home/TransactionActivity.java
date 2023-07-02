@@ -34,8 +34,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
-import java.util.Comparator;
+
 import java.util.List;
 
 import com.utar.merchant.R;
@@ -44,7 +43,7 @@ import com.utar.merchant.ui.home.transaction.TransactionViewHolder;
 public class TransactionActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener{
     private static final String TAG = "TransactionActivity";
     private DatabaseReference databaseReference;
-    private List<Transaction> transactionList = new ArrayList<>(), searchList;
+    private List<Transaction> transactionList = new ArrayList<>(), searchList, thirtyDaysList;
 
     private DatePickerDialog startDatePickerDialog, endDatePickerDialog;
     private AlertDialog dialog;
@@ -76,9 +75,36 @@ public class TransactionActivity extends AppCompatActivity implements DatePicker
                     transactionList = new ArrayList<>();
                     for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                         Transaction transaction = dataSnapshot.getValue(Transaction.class);
+
                         transactionList.add(0,transaction);
                     }
-                    displayList(transactionList);
+
+                    thirtyDaysList = new ArrayList<>();
+                    long currentTimestamp = System.currentTimeMillis();
+
+                    Calendar calendar = Calendar.getInstance();
+                    calendar.setTimeInMillis(currentTimestamp);
+
+                    calendar.set(Calendar.HOUR_OF_DAY, 0);
+                    calendar.set(Calendar.MINUTE, 0);
+                    calendar.set(Calendar.SECOND, 0);
+                    calendar.set(Calendar.MILLISECOND, 0);
+
+                    long todayTimestamp = calendar.getTimeInMillis();
+                    calendar.add(Calendar.DAY_OF_MONTH, -30);
+
+                    long previous30days = calendar.getTimeInMillis();
+
+                    for(int i = transactionList.size()-1; i >= 0; i--){
+                        if(isInRange(transactionList.get(i), previous30days, todayTimestamp)){
+                            thirtyDaysList.add(0, transactionList.get(i));
+                        }
+                    }
+                    if(thirtyDaysList.isEmpty()){
+                        toast(getString(R.string.noRecord));
+                        return;
+                    }
+                    displayList(thirtyDaysList);
                 }
                 else {
                     toast(getString(R.string.noRecord));
@@ -143,7 +169,8 @@ public class TransactionActivity extends AppCompatActivity implements DatePicker
                 currentDate.get(Calendar.MONTH), currentDate.get(Calendar.DAY_OF_MONTH));
         endDatePickerDialog = DatePickerDialog.newInstance(null, currentDate.get(Calendar.YEAR),
                 currentDate.get(Calendar.MONTH), currentDate.get(Calendar.DAY_OF_MONTH));
-
+        startDatePickerDialog.setOnDateSetListener(this::onDateSet);
+        endDatePickerDialog.setOnDateSetListener(this::onDateSet);
         //show date picker dialog
         btn_start_date.setOnClickListener(v -> startDatePickerDialog.show(getSupportFragmentManager(), "startDatePicker"));
         btn_end_date.setOnClickListener(v -> endDatePickerDialog.show(getSupportFragmentManager(), "endDatePicker"));
@@ -184,7 +211,7 @@ public class TransactionActivity extends AppCompatActivity implements DatePicker
                     else{
                         for(int i = transactionList.size()-1; i >= 0; i--){
                             if(isInRange(transactionList.get(i), startTime, endTime)){
-                                searchList.add(transactionList.get(i));
+                                searchList.add(0, transactionList.get(i));
                             }
                         }
 
@@ -227,7 +254,7 @@ public class TransactionActivity extends AppCompatActivity implements DatePicker
                 break;
             }
             case 2:{
-                displayList(transactionList);
+                displayList(thirtyDaysList);
                 break;
             }
         }

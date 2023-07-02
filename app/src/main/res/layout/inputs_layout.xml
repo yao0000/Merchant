@@ -6,7 +6,7 @@
     android:background="@color/light_grey"
     android:orientation="vertical">
 
-    <TextView
+    <!--TextView
         android:id="@+id/exp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -16,7 +16,7 @@
         android:singleLine="true"
         android:textColor="@color/white"
         android:textSize="40sp"
-        app:fontFamily="monospace" />
+        app:fontFamily="monospace" /-->
 
     <TextView
         android:id="@+id/out"

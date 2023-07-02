@@ -39,6 +39,9 @@ public class SettingsFragment extends Fragment {
 
         v.findViewById(R.id.tv_language).setOnClickListener(event ->
                 startActivity(new Intent(getActivity(), LanguageActivity.class)));
+
+        v.findViewById(R.id.tv_amount_customization).setOnClickListener(e ->
+                startActivity(new Intent(getActivity(), AmountCustomizationActivity.class)));
         return v;
     }
 }

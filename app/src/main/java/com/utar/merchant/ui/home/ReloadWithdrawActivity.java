@@ -3,10 +3,13 @@ package com.utar.merchant.ui.home;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -21,6 +24,7 @@ import com.utar.merchant.MyApplication;
 import com.utar.merchant.R;
 import com.utar.merchant.data.Account;
 import com.utar.merchant.data.Transaction;
+import com.utar.merchant.ui.NumberKeyboard;
 
 public class ReloadWithdrawActivity extends AppCompatActivity implements View.OnClickListener{
 
@@ -67,6 +71,7 @@ public class ReloadWithdrawActivity extends AppCompatActivity implements View.On
         tv_title = findViewById(R.id.reload_withdraw_title);
         et_amount = findViewById(R.id.et_reload_withdraw_amount);
         progressBar = findViewById(R.id.panel_progressBar);
+
 
         findViewById(R.id.backBtn).setOnClickListener(this::onClick);
         findViewById(R.id.btn_rm10).setOnClickListener(this::onClick);

@@ -84,6 +84,7 @@
     <string name="selectDate">Select a date</string>
     <string name="pleaseFillInDate">Please select date</string>
     <string name="date_duration_error">End date should be greater than Start date</string>
+    <string name="period" translatable="false">Period</string>
 
     <!--  Button Names  -->
     <string name="clearTxt" translatable="false">C</string>
@@ -126,6 +127,7 @@
     <string name="language">Language</string>
     <string name="require_field">This field cannot be blank</string>
     <string name="back_to_login">Back to Login</string>
+    <string name="amount_shortcut_key" translatable="false">Amount Shortcut Key</string>
 
     <!-- Language Activity -->
 

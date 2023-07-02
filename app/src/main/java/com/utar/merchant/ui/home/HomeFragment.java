@@ -21,7 +21,7 @@ import com.utar.merchant.R;
 import com.utar.merchant.data.*;
 
 
-public class HomeFragment extends Fragment implements View.OnClickListener{
+public class HomeFragment extends Fragment implements View.OnClickListener {
     TextView tv_amount, tv_name;
     DatabaseReference databaseReference;
     Account account;
@@ -60,20 +60,20 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
 
     @Override
     public void onClick(View v) {
-        switch(v.getId()){
-            case R.id.home_iv_reload:{
+        switch (v.getId()) {
+            case R.id.home_iv_reload: {
                 Intent intent = new Intent(getContext(), ReloadWithdrawActivity.class);
                 intent.putExtra("mode", ReloadWithdrawActivity.RELOAD);
                 startActivity(intent);
                 break;
             }
-            case R.id.home_iv_withdraw:{
+            case R.id.home_iv_withdraw: {
                 Intent intent = new Intent(getContext(), ReloadWithdrawActivity.class);
                 intent.putExtra("mode", ReloadWithdrawActivity.WITHDRAW);
                 startActivity(intent);
                 break;
             }
-            case R.id.home_iv_history:{
+            case R.id.home_iv_history: {
                 startActivity(new Intent(getContext(), TransactionActivity.class));
                 break;
             }

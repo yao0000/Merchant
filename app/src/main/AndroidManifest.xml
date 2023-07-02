@@ -18,9 +18,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Material3.Light">
         <activity
-            android:name=".ui.home.ReloadWithdrawActivity"
+            android:name=".ui.settings.AmountCustomizationActivity"
             android:exported="false"
             android:theme="@style/Theme.Material3.Light.NoActionBar"/>
+        <activity
+            android:name=".ui.home.ReloadWithdrawActivity"
+            android:exported="false"
+            android:theme="@style/Theme.Material3.Light.NoActionBar" />
         <activity
             android:name=".ui.settings.LanguageActivity"
             android:exported="false"

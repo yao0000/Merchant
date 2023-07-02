@@ -74,6 +74,8 @@
     <string name="filter">Filter</string>
     <string name="reset">Reset</string>
     <string name="noRecord">No record found!</string>
+    <string name="transaction_type" translatable="false">Transaction Type</string>
+    <string name="done" translatable="false">Done</string>
 
 
     <!-- Filtering Popup Windows Use -->

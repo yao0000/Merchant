@@ -104,8 +104,6 @@ public class AmountChangeLayout {
         v.findViewById(R.id.backspace).setOnClickListener(listener);
         v.findViewById(R.id.enter).setOnClickListener(listener);
 
-        v.findViewById(R.id.backBtn).setOnClickListener(e -> ((Activity)context).onBackPressed());
-
         resultTxtView.setText(textView.getText().toString());
         popupWindow = new PopupWindow(v, ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT, true);

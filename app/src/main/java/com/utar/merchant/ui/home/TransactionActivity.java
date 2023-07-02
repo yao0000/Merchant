@@ -1,23 +1,19 @@
 package com.utar.merchant.ui.home;
 
-import android.annotation.TargetApi;
-import android.app.AlertDialog;
-import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 
-import android.content.DialogInterface;
-import android.os.Build;
+import com.utar.merchant.ui.home.transaction.FilterDate;
+
 import android.os.Bundle;
-import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -30,23 +26,20 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.utar.merchant.data.Transaction;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
 import java.util.List;
 
 import com.utar.merchant.R;
+import com.utar.merchant.ui.home.transaction.FilterPopupWindows;
 import com.utar.merchant.ui.home.transaction.TransactionViewHolder;
 
-public class TransactionActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener{
+public class TransactionActivity extends AppCompatActivity{
     private static final String TAG = "TransactionActivity";
     private DatabaseReference databaseReference;
-    private List<Transaction> transactionList = new ArrayList<>(), searchList, thirtyDaysList;
+    private List<Transaction> transactionList = new ArrayList<>(), thirtyDaysList;
 
-    private DatePickerDialog startDatePickerDialog, endDatePickerDialog;
-    private AlertDialog dialog;
 
     private ImageView iv_filter;
     private TextView tv_start_date, tv_end_date;
@@ -61,12 +54,12 @@ public class TransactionActivity extends AppCompatActivity implements DatePicker
 
         recyclerView = findViewById(R.id.transaction_list);
         iv_filter = findViewById(R.id.iv_filter);
-        iv_filter.setOnClickListener(v -> v.showContextMenu());
-        registerForContextMenu(iv_filter);
+
+        iv_filter.setOnClickListener(v -> new FilterPopupWindows(TransactionActivity.this, findViewById(R.id.mainLayout)));
+
 
         String userID = FirebaseAuth.getInstance().getUid();
         databaseReference = FirebaseDatabase.getInstance().getReference("transactions");
-        initDatePickDialog();
 
         databaseReference.child(userID).addValueEventListener(new ValueEventListener() {
             @Override
@@ -125,7 +118,7 @@ public class TransactionActivity extends AppCompatActivity implements DatePicker
         return transactionActivity.getString(resId);
     }
 
-    private void displayList(List list){
+    public void displayList(List list){
         recyclerView.setLayoutManager(new LinearLayoutManager(TransactionActivity.this));
         recyclerView.setAdapter(new RecyclerView.Adapter<TransactionViewHolder>() {
 
@@ -152,126 +145,10 @@ public class TransactionActivity extends AppCompatActivity implements DatePicker
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
     }
 
-    private void initDatePickDialog(){
-        AlertDialog.Builder alert = new AlertDialog.Builder(this);
-
-        View view = getLayoutInflater().inflate(R.layout.layout_date_picker, null);
-        TextView tv_search = view.findViewById(R.id.date_tv_search);
-
-        tv_start_date = view.findViewById(R.id.tv_start_date);
-        tv_end_date = view.findViewById(R.id.tv_end_date);
-        Button btn_start_date = view.findViewById(R.id.btn_start_date);
-        Button btn_end_date = view.findViewById(R.id.btn_end_date);
-
-        //to initialise to current date
-        Calendar currentDate = Calendar.getInstance();
-        startDatePickerDialog = DatePickerDialog.newInstance(null, currentDate.get(Calendar.YEAR),
-                currentDate.get(Calendar.MONTH), currentDate.get(Calendar.DAY_OF_MONTH));
-        endDatePickerDialog = DatePickerDialog.newInstance(null, currentDate.get(Calendar.YEAR),
-                currentDate.get(Calendar.MONTH), currentDate.get(Calendar.DAY_OF_MONTH));
-        startDatePickerDialog.setOnDateSetListener(this::onDateSet);
-        endDatePickerDialog.setOnDateSetListener(this::onDateSet);
-        //show date picker dialog
-        btn_start_date.setOnClickListener(v -> startDatePickerDialog.show(getSupportFragmentManager(), "startDatePicker"));
-        btn_end_date.setOnClickListener(v -> endDatePickerDialog.show(getSupportFragmentManager(), "endDatePicker"));
-
-        tv_search.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String startDate = String.valueOf(tv_start_date.getText());
-                String endDate = String.valueOf(tv_end_date.getText());
-
-                if(startDate.equals(getResources().getString(R.string.selectDate)) || endDate.equals(getResources().getString(R.string.selectDate))){
-                    toast(getResources().getString(R.string.pleaseFillInDate));
-                    return;
-                }
-
-                startDate = startDate + " 00:00:00";
-                endDate = endDate + " 23:59:59";
-                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd MMM yyyy hh:mm:ss");
-
-                searchList = new ArrayList<>();
-                try {
-                    long startTime = simpleDateFormat.parse(startDate).getTime();
-                    long endTime = simpleDateFormat.parse(endDate).getTime();
-                    if(startTime > endTime){
-                        AlertDialog.Builder alertDialog = new AlertDialog.Builder(TransactionActivity.this);
-                        alertDialog.setTitle(getString(R.string.alert));
-                        alertDialog.setMessage(getString(R.string.date_duration_error));
-                        alertDialog.setPositiveButton( "OK",
-                                new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialogOwn, int which) {
-                                        dialogOwn.dismiss();
-                                    }
-                                });
-                        alertDialog.create().show();
-                        return;
-
-                    }
-                    else{
-                        for(int i = transactionList.size()-1; i >= 0; i--){
-                            if(isInRange(transactionList.get(i), startTime, endTime)){
-                                searchList.add(0, transactionList.get(i));
-                            }
-                        }
-
-                        if(searchList.size() == 0){
-                            toast(getResources().getString(R.string.noRecord));
-                        }else {
-                            displayList(searchList);
-                            dialog.dismiss();
-                        }
-                    }
-
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-        alert.setView(view);
-        dialog = alert.create();
+    public List getTransactionList(){
+        return transactionList;
     }
-
-
-    private boolean isInRange(Transaction transaction, long startTime, long endTime){
+    public boolean isInRange(Transaction transaction, long startTime, long endTime){
         return ((transaction.getTimestamp() > startTime) && (transaction.getTimestamp() < endTime));
-    }
-
-    @Override
-    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-        super.onCreateContextMenu(menu, v, menuInfo);
-        if(v.getId() == R.id.iv_filter){
-            menu.add(0, 1, 0, getResources().getString(R.string.filter));
-            menu.add(0, 2, 0, getResources().getString(R.string.reset));
-        }
-    }
-
-    @Override
-    public boolean onContextItemSelected(MenuItem item) {
-        switch(item.getItemId()){
-            case 1:{
-                dialog.show();
-                break;
-            }
-            case 2:{
-                displayList(thirtyDaysList);
-                break;
-            }
-        }
-        return super.onContextItemSelected(item);
-    }
-
-    @TargetApi(Build.VERSION_CODES.O)
-    @Override
-    public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
-        String month[] = {"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sept", "Oct", "Nov", "Dec"};
-        String selectedDate = dayOfMonth + " " + month[monthOfYear] + " " + year;
-
-        if(view == startDatePickerDialog){
-            tv_start_date.setText(selectedDate);
-        }
-        else if(view == endDatePickerDialog){
-            tv_end_date.setText(selectedDate);
-        }
     }
 }

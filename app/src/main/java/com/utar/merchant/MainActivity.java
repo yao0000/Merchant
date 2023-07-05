@@ -3,6 +3,7 @@ package com.utar.merchant;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
+import android.bluetooth.BluetoothAdapter;
 import android.os.Bundle;
 import android.view.MenuItem;
 

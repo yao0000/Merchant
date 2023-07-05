@@ -58,6 +58,10 @@
     <string name="selectDate">选择日期</string>
     <string name="pleaseFillInDate">请选择日期</string>
     <string name="date_duration_error">结束日期应该大于起始日期</string>
+    <string name="today">今天</string>
+    <string name="last_7_days">过去7天</string>
+    <string name="last_30_days">过去30天</string>
+    <string name="last_90_days">过去90天</string>
     <string name="enter">确认</string>
     <string name="require_amount">请输入金额</string>
     <string name="nfc_disable_alert">NFC已禁用</string>

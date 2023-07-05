@@ -5,4 +5,10 @@
         <item name="android:windowExitAnimation">@anim/slide_out_top</item>
     </style>
 
+    <style name="cb_color" parent="Base.Theme.AppCompat">
+        <item name="colorAccent">@color/soft_blue</item> <!-- for uncheck state -->
+        <item name="android:textColorSecondary">@color/navy_blue</item> <!-- for check state -->
+    </style>
+
+
 </resources>

@@ -7,31 +7,47 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.PopupWindow;
+import android.widget.Toast;
 
 import com.utar.merchant.R;
+import com.utar.merchant.data.Transaction;
+import com.utar.merchant.ui.home.TransactionActivity;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class FilterTransactionType implements View.OnClickListener{
+public class FilterTransactionType implements View.OnClickListener {
 
     private Context context;
 
     private PopupWindow popupWindow, filterWindows;
+    private CheckBox cb_reload, cb_withdraw, cb_paymentReceive;
     private View view;
     private List<CheckBox> checkBoxList;
+    private FilterTypeListener mListener;
 
-    public FilterTransactionType(Context context, PopupWindow filterWindows){
+    public interface FilterTypeListener{
+        List getCurrentDisplayList();
+        void displayFilteredList(List list);
+    }
+
+    public FilterTransactionType(Context context, PopupWindow filterWindows) {
         this.context = context;
         this.filterWindows = filterWindows;
         this.checkBoxList = new ArrayList<>();
+        this.mListener = (FilterTypeListener) context;
 
         LayoutInflater inflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         view = inflater.inflate(R.layout.popup_transaction_type, null);
-        checkBoxList.add(view.findViewById(R.id.cb_reload));
-        checkBoxList.add(view.findViewById(R.id.cb_withdraw));
-        checkBoxList.add(view.findViewById(R.id.cb_payment_receive));
+
+        cb_reload = view.findViewById(R.id.cb_reload);
+        cb_withdraw = view.findViewById(R.id.cb_withdraw);
+        cb_paymentReceive = view.findViewById(R.id.cb_payment_receive);
+
+        checkBoxList.add(cb_reload);
+        checkBoxList.add(cb_withdraw);
+        checkBoxList.add(cb_paymentReceive);
 
         view.findViewById(R.id.backBtn).setOnClickListener(this::onClick);
         view.findViewById(R.id.btn_cancel).setOnClickListener(this::onClick);
@@ -63,7 +79,40 @@ public class FilterTransactionType implements View.OnClickListener{
                 break;
             }
             case R.id.btn_done: {
+                int count = 0;
+                for (int i = 0; i < checkBoxList.size(); i++) {
+                    if (checkBoxList.get(i).isChecked()) {
+                        count++;
+                    }
+                }
+                if (count == 0) {
+                    break;
+                }
 
+                List<Transaction> transactionList = mListener.getCurrentDisplayList();
+                List<Transaction> filteredList = new ArrayList<>();
+
+                for(Transaction transaction : transactionList){
+                    if(!cb_reload.isChecked() && transaction.getType().equals(Transaction.RELOAD)){
+                        continue;
+                    }
+                    else if (!cb_withdraw.isChecked() && transaction.getType().equals(Transaction.WITHDRAW)) {
+                        continue;
+                    }
+                    else if(!cb_paymentReceive.isChecked() && transaction.getType().equals(Transaction.PAYMENT_RECEIVE)){
+                        continue;
+                    }
+                    filteredList.add(0, transaction);
+                }
+
+                if(filteredList.isEmpty()){
+                    Toast.makeText(context, context.getString(R.string.noRecord), Toast.LENGTH_SHORT).show();
+                    break;
+                }
+                mListener.displayFilteredList(filteredList);
+                popupWindow.dismiss();
+                filterWindows.dismiss();
+                break;
             }
         }
     }

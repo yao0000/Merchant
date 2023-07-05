@@ -50,21 +50,8 @@ public class Login extends AppCompatActivity {
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        /*Log.i(TAG, "HceService is disabled");
-        PackageManager pm = getPackageManager();
-        pm.setComponentEnabledSetting(new ComponentName(this,
-                        "com.utar.client.cardemulation.HCEService"),
-                PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
-                PackageManager.DONT_KILL_APP);*/
-    }
-
-    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        //nfcPermissionCheck();
 
         SharedPreferences sharedPreferences = getSharedPreferences("MyPreferences", MODE_PRIVATE);
         String lang = sharedPreferences.getString("language", "en");

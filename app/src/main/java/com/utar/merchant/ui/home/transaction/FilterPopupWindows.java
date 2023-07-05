@@ -33,6 +33,7 @@ public class FilterPopupWindows implements View.OnClickListener {
         view.findViewById(R.id.tv_period).setOnClickListener(this::onClick);
         view.findViewById(R.id.tv_reset).setOnClickListener(this::onClick);
 
+
         popupWindow = new PopupWindow(view, ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT, true);
 
@@ -53,7 +54,8 @@ public class FilterPopupWindows implements View.OnClickListener {
     public void onClick(View v) {
         switch(v.getId()){
             case R.id.backBtn:{
-
+                activity.onBackPressed();
+                break;
             }
             case R.id.tv_period:{
                 new FilterTransactionType(context, popupWindow);

@@ -10,6 +10,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.utar.merchant.R;
@@ -32,7 +33,7 @@ public class AmountCustomizationActivity extends AppCompatActivity implements Vi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_amount_customization);
 
-
+        findViewById(R.id.backBtn).setOnClickListener(v -> onBackPressed());
         textViewList = new ArrayList<>();
         textViewList.add(findViewById(R.id.tv_amount_1));
         textViewList.add(findViewById(R.id.tv_amount_2));

@@ -88,6 +88,12 @@
     <string name="date_duration_error">End date should be greater than Start date</string>
     <string name="period" translatable="false">Period</string>
 
+    <!--Duration-->
+    <string name="today">Today</string>
+    <string name="last_7_days">Last 7 days</string>
+    <string name="last_30_days">Last 30 days</string>
+    <string name="last_90_days">Last 90 days</string>
+
     <!--  Button Names  -->
     <string name="clearTxt" translatable="false">C</string>
     <string name="backspace" translatable="false">\u232b</string>
@@ -131,7 +137,7 @@
     <string name="back_to_login">Back to Login</string>
     <string name="amount_shortcut_key" translatable="false">Amount Shortcut Key</string>
 
-    <!-- Language Activity -->
-
+    <!-- Filter Transaction Type-->
+    <string name="please_select_at_least_one" translatable="false"></string>
 
 </resources>

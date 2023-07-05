@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -29,9 +30,19 @@ public class FilterDate implements DatePickerDialog.OnDateSetListener, View.OnCl
     private AlertDialog dialog;
     private TextView tv_start_date, tv_end_date;
 
+    private FilterListListener filterListListener;
+
+    String selectedStartDate, selectedEndDate;
+
+    public interface FilterListListener{
+        void setFilteredList(List list);
+    }
+
     public FilterDate(Context context) {
         this.context = context;
-        activity = (Activity) context;
+        this.activity = (Activity) context;
+        this.filterListListener = (FilterListListener) context;
+
         initialization();
         pickerInitialization();
     }
@@ -49,6 +60,12 @@ public class FilterDate implements DatePickerDialog.OnDateSetListener, View.OnCl
         layout.findViewById(R.id.date_tv_search).setOnClickListener(this::onClick);
         layout.findViewById(R.id.btn_start_date).setOnClickListener(this::onClick);
         layout.findViewById(R.id.btn_end_date).setOnClickListener(this::onClick);
+        layout.findViewById(R.id.ll_start_date).setOnClickListener(this::onClick);
+        layout.findViewById(R.id.ll_end_date).setOnClickListener(this::onClick);
+        layout.findViewById(R.id.tv_today).setOnClickListener(this::onClick);
+        layout.findViewById(R.id.tv_last_7_days).setOnClickListener(this::onClick);
+        layout.findViewById(R.id.tv_last_30_days).setOnClickListener(this::onClick);
+        layout.findViewById(R.id.tv_last_90_days).setOnClickListener(this::onClick);
 
         AlertDialog.Builder alert = new AlertDialog.Builder(context);
         alert.setView(layout);
@@ -71,6 +88,16 @@ public class FilterDate implements DatePickerDialog.OnDateSetListener, View.OnCl
                 , currentDate.get(Calendar.YEAR)
                 , currentDate.get(Calendar.MONTH)
                 , currentDate.get(Calendar.DATE));
+
+        Calendar minDate = Calendar.getInstance();
+        Calendar maxDate = Calendar.getInstance();
+
+        minDate.add(Calendar.DATE, -91);
+
+        startDatePickerDialog.setMinDate(minDate);
+        startDatePickerDialog.setMaxDate(maxDate);
+        endDatePickerDialog.setMinDate(minDate);
+        endDatePickerDialog.setMaxDate(maxDate);
     }
 
 
@@ -99,7 +126,7 @@ public class FilterDate implements DatePickerDialog.OnDateSetListener, View.OnCl
 
         startDateSelected += " 00:00:00";
         endDateSelected += " 23:59:59";
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd MMM yyyy hh:mm:ss");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd MMM yyyy HH:mm:ss");
 
         try {
             long startTimestamp = simpleDateFormat.parse(startDateSelected).getTime();
@@ -134,8 +161,12 @@ public class FilterDate implements DatePickerDialog.OnDateSetListener, View.OnCl
                 return;
             }
 
-            transactionActivity.displayList(searchList);
+            filterListListener.setFilteredList(searchList);
+            //transactionActivity.displayList(searchList);
             dialog.dismiss();
+            ((TextView)activity.findViewById(R.id.tv_range))
+                    .setText(selectedStartDate + " - " + selectedEndDate);
+
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -148,18 +179,49 @@ public class FilterDate implements DatePickerDialog.OnDateSetListener, View.OnCl
                 search();
                 break;
             }
-            case R.id.btn_start_date: {
+            case R.id.btn_start_date:
+            case R.id.ll_start_date: {
                 startDatePickerDialog
                         .show(TransactionActivity.getInstance().getSupportFragmentManager()
                                 , "startDatePicker");
                 break;
             }
+            case R.id.ll_end_date:
             case R.id.btn_end_date: {
                 endDatePickerDialog
                         .show(TransactionActivity.getInstance().getSupportFragmentManager()
                                 , "endDatePicker");
                 break;
             }
+            case R.id.tv_today:{
+                setDateSelection(0);
+                break;
+            }
+            case R.id.tv_last_7_days:{
+                setDateSelection(-6);
+                break;
+
+            }
+            case R.id.tv_last_30_days:{
+                setDateSelection(-29);
+                break;
+            }
+            case R.id.tv_last_90_days:{
+                setDateSelection(-89);
+                break;
+            }
         }
+    }
+
+    private void setDateSelection(int daysCount){
+        long startTimestamp = TransactionActivity
+                .getCalculatedTimestamp(daysCount, TransactionActivity.START_TIMESTAMP);
+        selectedStartDate = TransactionActivity.getDateString(startTimestamp);
+        tv_start_date.setText(selectedStartDate);
+
+        long endTimestamp = TransactionActivity
+                .getCalculatedTimestamp(0, TransactionActivity.END_TIMESTAMP);
+        selectedEndDate = TransactionActivity.getDateString(endTimestamp);
+        tv_end_date.setText(selectedEndDate);
     }
 }

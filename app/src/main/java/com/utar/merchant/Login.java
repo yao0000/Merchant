@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -77,6 +78,9 @@ public class Login extends AppCompatActivity {
         findViewById(R.id.login_tv_forgotPassword).setOnClickListener(v ->
                 startActivity(new Intent(getApplicationContext(), ForgotPasswordActivity.class)));
 
+        findViewById(R.id.tv_nfc_login).setOnClickListener(v ->
+                startActivity(new Intent(Login.this, NfcLoginActivity.class)));
+
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -111,38 +115,48 @@ public class Login extends AppCompatActivity {
                             @Override
                             public void onComplete(Task<AuthResult> task) {
                                 progressBar.setVisibility(View.GONE);
-                                if (task.isSuccessful()) {
-
-                                    FirebaseDatabase.getInstance().getReference("user").child(FirebaseAuth.getInstance().getUid())
-                                            .addValueEventListener(new ValueEventListener() {
-                                                @Override
-                                                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                                    Account account = snapshot.getValue(Account.class);
-
-                                                    if(!account.getRole().equals(Account.FIX_MERCHANT)){
-                                                        Toast.makeText(getApplicationContext(), getString(R.string.invalid_account), Toast.LENGTH_SHORT).show();
-                                                        FirebaseAuth.getInstance().signOut();
-                                                    }
-                                                    else{
-                                                        Toast.makeText(Login.this, getString(R.string.login_success), Toast.LENGTH_SHORT).show();
-
-                                                        startActivity(new Intent(getApplicationContext(), MainActivity.class));
-                                                        finish();
-                                                    }
-                                                }
-
-                                                @Override
-                                                public void onCancelled(@NonNull DatabaseError error) {
-
-                                                }
-                                            });
-                                } else {
-                                    // If sign in fails, display a message to the user.
-
+                                if(!task.isSuccessful()) {
                                     Toast.makeText(Login.this, getString(R.string.invalid_account),
                                             Toast.LENGTH_SHORT).show();
-
+                                    return;
                                 }
+
+                                FirebaseDatabase.getInstance()
+                                        .getReference("user")
+                                        .child(FirebaseAuth.getInstance().getUid())
+                                        .addValueEventListener(new ValueEventListener() {
+                                            @Override
+                                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                                Account account = snapshot.getValue(Account.class);
+
+                                                if(!account.getRole().equals(Account.FIX_MERCHANT)){
+                                                    Toast.makeText(getApplicationContext(), getString(R.string.invalid_account), Toast.LENGTH_SHORT).show();
+                                                    FirebaseAuth.getInstance().signOut();
+                                                    return;
+                                                }
+
+                                                Toast.makeText(Login.this, getString(R.string.login_success), Toast.LENGTH_SHORT).show();
+
+                                                if(account.getPassword() != null){
+                                                    if(!account.getPassword().equals(password)){
+                                                        FirebaseDatabase.getInstance()
+                                                                .getReference("user")
+                                                                .child(FirebaseAuth.getInstance().getUid())
+                                                                .child("password")
+                                                                .setValue(password);
+                                                    }
+                                                }
+
+                                                startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                                                finish();
+
+                                            }
+
+                                            @Override
+                                            public void onCancelled(@NonNull DatabaseError error) {
+
+                                            }
+                                        });
                             }
 
                         });

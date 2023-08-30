@@ -18,9 +18,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Material3.Light">
         <activity
+            android:name=".NfcLoginActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.settings.AmountCustomizationActivity"
             android:exported="false"
-            android:theme="@style/Theme.Material3.Light.NoActionBar"/>
+            android:theme="@style/Theme.Material3.Light.NoActionBar" />
         <activity
             android:name=".ui.home.ReloadWithdrawActivity"
             android:exported="false"

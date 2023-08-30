@@ -120,6 +120,7 @@ public class ReceiveActivity extends AppCompatActivity implements HCECardReader.
             @Override
             public void run() {
                 tv_receive_status.setText(getString(id));
+
             }
         });
     }
@@ -132,6 +133,7 @@ public class ReceiveActivity extends AppCompatActivity implements HCECardReader.
                 lottieAnimationView.setAnimation(rawRes);
                 lottieAnimationView.loop(repeat);
                 lottieAnimationView.playAnimation();
+
             }
         });
     }
@@ -178,6 +180,7 @@ public class ReceiveActivity extends AppCompatActivity implements HCECardReader.
             @Override
             public void run() {
                 resetTimer.start();
+
             }
         });
     }

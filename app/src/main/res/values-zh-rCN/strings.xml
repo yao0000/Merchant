@@ -23,6 +23,7 @@
     <string name="to_register">点击注册</string>
     <string name="login_success">登入成功</string>
     <string name="login_fail">登入失败</string>
+    <string name="invalid_account">无效账户</string>
     <string name="registration">注册</string>
     <string name="confirm_password">确认密码</string>
     <string name="confirm_password_hint">输入确认密码</string>

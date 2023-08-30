@@ -93,6 +93,16 @@
             android:text="@string/login" />
 
         <TextView
+            android:id="@+id/tv_nfc_login"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:gravity="center"
+            android:textSize="20sp"
+            android:textColor="@color/soft_blue"
+            android:text="NFC Import Login"/>
+
+        <TextView
             android:id="@+id/login_tv_register"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

@@ -33,7 +33,7 @@
     <string name="to_register">Click to Register</string>
     <string name="login_success">Login Successfully</string>
     <string name="login_fail">Login Failure</string>
-    <string name="invalid_account" translatable="false">Invalid Account</string>
+    <string name="invalid_account">Invalid Account</string>
 
     <!-- Registration -->
     <string name="registration">Registration</string>

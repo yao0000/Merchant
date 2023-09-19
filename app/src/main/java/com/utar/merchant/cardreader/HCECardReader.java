@@ -72,29 +72,31 @@ public class HCECardReader implements NfcAdapter.ReaderCallback {
 
     @Override
     public void onTagDiscovered(Tag tag) {
-        Log.i(TAG, "New tag discovered");
-
         isoDep = IsoDep.get(tag);
 
+        Log.i(TAG, "New tag discovered");
+        long start = System.currentTimeMillis();
+        Log.i("NFC Card Reader", "Starting time: " + start);
+
+        isoDep = IsoDep.get(tag);
         if(tag == null){
             Log.e(TAG, "Tag is null object reference");
             return;
         }
 
-        try{
 
+        try{
             //connect to hce device
             isoDep.connect();
-
             mAccountCallback.get().setStatusText(R.string.please_wait);
-            Log.i(TAG, "Timeout: " + isoDep.getTimeout());
+            //Log.i(TAG, "Timeout: " + isoDep.getTimeout());
             isoDep.setTimeout(3600);
-            Log.i(TAG, "Timeout: " + isoDep.getTimeout());
-            Log.i(TAG, "Max Transceive Length: " + isoDep.getMaxTransceiveLength());
-            Log.i(TAG, "Requesting Remote AID: " + WALLET_CARD_AID);
+            //Log.i(TAG, "Timeout: " + isoDep.getTimeout());
+            //Log.i(TAG, "Max Transceive Length: " + isoDep.getMaxTransceiveLength());
+            //Log.i(TAG, "Requesting Remote AID: " + WALLET_CARD_AID);
 
             byte[] apduCommand = BuildSelectApdu(WALLET_CARD_AID);
-            Log.i(TAG, "Connect to corresponding AID by using command: " + ByteArrayToHexString(apduCommand));
+            //Log.i(TAG, "Connect to corresponding AID by using command: " + ByteArrayToHexString(apduCommand));
 
             byte[] result = isoDep.transceive(apduCommand);
             int resultLength = result.length;
@@ -114,14 +116,14 @@ public class HCECardReader implements NfcAdapter.ReaderCallback {
                     @Override
                     public void onComplete(Task<DataSnapshot> task) {
                         if(task.isSuccessful()){
-                            Log.i(TAG, "get payee data done");
+
                             payeeAccount = task.getResult().getValue(Account.class);
-                            Log.i("Account Name: ", payeeAccount.getName());
+
                             double userBalance = Double.parseDouble(payeeAccount.getBalance());
                             double amount = mAccountCallback.get().getAmount();
 
                             if(userBalance <  amount){
-                                Log.i(TAG, "Insufficient balance!");
+
                                 mAccountCallback.get().setStatusText(R.string.insufficient_balance);
                                 mAccountCallback.get().setAnimation(R.raw.card_fail, false);
                                 mAccountCallback.get().countDownFinish();
@@ -147,13 +149,12 @@ public class HCECardReader implements NfcAdapter.ReaderCallback {
                                     @Override
                                     public void onComplete(Task<DataSnapshot> task) {
                                         if(task.isSuccessful()){
-                                            Log.i(TAG, "User information retrieve successfully");
+
                                             myAccount = task.getResult().getValue(Account.class);
 
                                             //transaction for payee
                                             Transaction payeeTransaction = new Transaction(myAccount.getName(), amount, Transaction.PAYMENT);
                                             transactionDatabaseReference.child(payeeID).push().setValue(payeeTransaction);
-                                            Log.i("My Account Name: ", myAccount.getName());
 
                                             //transaction for me
                                             Transaction myTransaction = new Transaction(payeeAccount.getName(), amount, Transaction.PAYMENT_RECEIVE);
@@ -172,6 +173,11 @@ public class HCECardReader implements NfcAdapter.ReaderCallback {
                                             mAccountCallback.get().setStatusText(R.string.payment_success);
                                             mAccountCallback.get().setAnimation(R.raw.nfc_finish, false);
                                             mAccountCallback.get().countDownFinish();
+
+                                            //after all actions are done
+                                            long end = System.currentTimeMillis();
+                                            Log.i("NFC Card Reader", "Ending time: " + end);
+                                            Log.i("NFC Card Reader", "Processing Duration: " + end + " - " + start + " = "+(end-start));
                                         }
                                         else{
                                             Log.e(TAG, "Firebase retrieve user information unsuccessful");
@@ -203,6 +209,9 @@ public class HCECardReader implements NfcAdapter.ReaderCallback {
             mAccountCallback.get().setStatusText(R.string.communication_error);
             mAccountCallback.get().setAnimation(R.raw.card_fail, false);
             mAccountCallback.get().countDownReset();
+        }
+        finally {
+
         }
     }
 

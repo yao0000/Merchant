@@ -52,6 +52,11 @@
     <string name="filter">筛选</string>
     <string name="reset">重置</string>
     <string name="noRecord">未找到记录！</string>
+    <string name="new_device">新设备登入</string>
+    <string name="log_out_from_old_device">登出旧设备</string>
+    <string name="tap_nfc_device">将您的手机轻触支持 NFC 的设备</string>
+    <string name="transaction_type">转账种类</string>
+    <string name="done">完成</string>
     <string name="history_search_title">搜索记录</string>
     <string name="start_date">起始日期</string>
     <string name="end_date">结束日期</string>
@@ -80,4 +85,11 @@
     <string name="unknown_tag_detected">检测到未知标签</string>
     <string name="tag_disconnected">标签断开连接</string>
     <string name="communication_error">通信错误</string>
+    <string name="amount_shortcut_key">数额快捷键</string>
+    <string name="period">时期</string>
+    <string name="nfc_not_found">" 不支持 NFC"</string>
+    <string name="nfc_login">NFC 替换登录</string>
+    <string name="change_authentication_pin">更换验证密码</string>
+    <string name="old_pin">输入旧付款密码</string>
+    <string name="new_pin">输入新付款密码</string>
 </resources>

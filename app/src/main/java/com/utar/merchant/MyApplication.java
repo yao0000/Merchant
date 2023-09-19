@@ -1,7 +1,12 @@
 package com.utar.merchant;
 
 import android.app.Application;
+import android.content.ComponentName;
+import android.content.ContentResolver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.provider.Settings;
 import android.util.Log;
 
 
@@ -13,6 +18,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.utar.merchant.cardreader.AccountExportHCEService;
 import com.utar.merchant.data.Account;
 
 public class MyApplication extends Application {
@@ -27,12 +33,20 @@ public class MyApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+
+        PackageManager pm = getPackageManager();
+        pm.setComponentEnabledSetting(new ComponentName(this,
+                        "com.utar.merchant.cardreader.AccountExportHCEService"),
+                PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
+                PackageManager.DONT_KILL_APP);
+
         myApplication = this;
         FirebaseDatabase.getInstance().setPersistenceEnabled(true);
         displayHeight = getResources().getDisplayMetrics().heightPixels;
         displayWidth = getResources().getDisplayMetrics().widthPixels;
 
         firebaseUserUpdate();
+
     }
 
     public static MyApplication getInstance(){
@@ -71,5 +85,6 @@ public class MyApplication extends Application {
     public Account getAccount(){
         return account;
     }
+
 
 }

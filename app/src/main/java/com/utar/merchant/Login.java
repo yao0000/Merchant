@@ -1,6 +1,7 @@
 package com.utar.merchant;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -8,6 +9,7 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.nfc.NfcAdapter;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -33,19 +35,18 @@ import java.util.regex.Pattern;
 
 public class Login extends AppCompatActivity {
     private static final String TAG = "LoginFragment";
-
     EditText editTextEmail, editTextPassword;
     Button btnLogin;
     FirebaseAuth mAuth;
     ProgressBar progressBar;
 
     @Override
-    public void onStart() {
-        super.onStart();
+    public void onResume() {
+        super.onResume();
 
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        if(currentUser != null){
-            startActivity(new Intent(getApplicationContext(), MainActivity.class));
+        //FirebaseAuth currentUser = mAuth.getUid();
+        if(FirebaseAuth.getInstance().getUid() != null){
+            startActivity(new Intent(Login.this, MainActivity.class));
             finish();
         }
     }
@@ -135,20 +136,45 @@ public class Login extends AppCompatActivity {
                                                     return;
                                                 }
 
-                                                Toast.makeText(Login.this, getString(R.string.login_success), Toast.LENGTH_SHORT).show();
 
-                                                if(account.getPassword() != null){
-                                                    if(!account.getPassword().equals(password)){
-                                                        FirebaseDatabase.getInstance()
-                                                                .getReference("user")
-                                                                .child(FirebaseAuth.getInstance().getUid())
-                                                                .child("password")
-                                                                .setValue(password);
-                                                    }
+                                                String id = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
+                                                if(account.getDeviceId() == null){
+                                                    updateDeviceId(id);
+                                                    account.setDeviceId(id);
+                                                }
+                                                if(!account.getDeviceId().equals(id)){
+                                                    new AlertDialog.Builder(Login.this)
+                                                            .setTitle(getString(R.string.new_device))
+                                                            .setMessage(getString(R.string.log_out_from_old_device) + "?")
+                                                            .setPositiveButton("OK", (dialog, which) -> {
+                                                                Toast.makeText(Login.this, getString(R.string.login_success), Toast.LENGTH_SHORT).show();
+
+                                                                if(account.getPassword() != null){
+                                                                    if(!account.getPassword().equals(password)){
+                                                                        FirebaseDatabase.getInstance()
+                                                                                .getReference("user")
+                                                                                .child(FirebaseAuth.getInstance().getUid())
+                                                                                .child("password")
+                                                                                .setValue(password);
+                                                                    }
+                                                                }
+                                                                updateDeviceId(id);
+
+                                                                startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                                                                finish();
+                                                            })
+                                                            .setNegativeButton(getString(R.string.cancel), (dialog, which) -> {
+                                                                FirebaseAuth.getInstance().signOut();
+                                                            })
+                                                            .setIcon(android.R.drawable.ic_dialog_alert)
+                                                            .show();
+                                                }
+                                                else{
+                                                    startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                                                    finish();
                                                 }
 
-                                                startActivity(new Intent(getApplicationContext(), MainActivity.class));
-                                                finish();
+
 
                                             }
 
@@ -162,6 +188,14 @@ public class Login extends AppCompatActivity {
                         });
             }
         });
+    }
+
+    public static void updateDeviceId(String id){
+        FirebaseDatabase.getInstance()
+                .getReference("user")
+                .child(FirebaseAuth.getInstance().getUid())
+                .child("deviceId")
+                .setValue(id);
     }
 
 

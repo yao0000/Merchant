@@ -62,6 +62,12 @@ public class ReceiveFragment extends Fragment implements View.OnClickListener {
                     }
 
                     NfcAdapter nfcAdapter = NfcAdapter.getDefaultAdapter(getContext());
+
+                    if(nfcAdapter == null){
+                        Toast.makeText(getContext(), getString(R.string.nfc_not_found), Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+
                     if (nfcAdapter.isEnabled()) {
                         SharedPreferences pref = getActivity().getSharedPreferences("MySharedPreferences", Context.MODE_PRIVATE);
                         SharedPreferences.Editor prefEditor = pref.edit();

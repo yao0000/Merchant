@@ -25,10 +25,12 @@ public class LanguageActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_language);
-        String[] languages = {"English", "Bahasa Melayu", "中文"};
+        String[] languages = {"English", "中文"};
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(
                 this, android.R.layout.simple_list_item_1, languages);
+
+        findViewById(R.id.backBtn).setOnClickListener(e -> onBackPressed());
 
         ListView lv_language = findViewById(R.id.lv_language_list);
         lv_language.setAdapter(adapter);
@@ -42,9 +44,6 @@ public class LanguageActivity extends AppCompatActivity {
                     lang = "en";
                 }
                 else if(position == 1){
-                    lang = "bm";
-                }
-                else if(position == 2){
                     lang = "zh";
                 }
 

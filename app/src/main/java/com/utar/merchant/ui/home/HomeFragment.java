@@ -1,15 +1,18 @@
 package com.utar.merchant.ui.home;
 
 import android.content.Intent;
+import android.media.audiofx.Equalizer;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.provider.Settings;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -38,7 +41,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         tv_name = v.findViewById(R.id.home_tv_name);
 
         String userID = FirebaseAuth.getInstance().getUid();
-        FirebaseDatabase.getInstance().getReference("user").child(userID).keepSynced(true);
+        //FirebaseDatabase.getInstance().getReference("user").child(userID).keepSynced(true);
         databaseReference = FirebaseDatabase.getInstance().getReference("user").child(userID);
 
         databaseReference.addValueEventListener(new ValueEventListener() {

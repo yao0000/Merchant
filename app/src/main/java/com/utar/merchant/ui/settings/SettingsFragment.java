@@ -1,6 +1,7 @@
 package com.utar.merchant.ui.settings;
 
 import android.content.Intent;
+import android.nfc.NfcAdapter;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AlertDialog;
@@ -16,8 +17,9 @@ import com.utar.merchant.Login;
 import com.utar.merchant.R;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.utar.merchant.ui.auth.RegisterPinActivity;
 
-public class SettingsFragment extends Fragment {
+public class SettingsFragment extends Fragment implements View.OnClickListener{
 
     TextView tv_logout;
 
@@ -26,10 +28,52 @@ public class SettingsFragment extends Fragment {
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_settings, container, false);
 
-        tv_logout = v.findViewById(R.id.setting_tv_logout);
-        tv_logout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        v.findViewById(R.id.setting_tv_logout).setOnClickListener(this::onClick);
+        v.findViewById(R.id.tv_language).setOnClickListener(this::onClick);
+        v.findViewById(R.id.tv_amount_customization).setOnClickListener(this::onClick);
+        v.findViewById(R.id.setting_nfc_export).setOnClickListener(this::onClick);
+        v.findViewById(R.id.tv_change_pin).setOnClickListener(this::onClick);
+        return v;
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch(view.getId()){
+            case R.id.tv_language:{
+                startActivity(new Intent(getActivity(), LanguageActivity.class));
+                break;
+            }
+            case R.id.tv_amount_customization:{
+                startActivity(new Intent(getActivity(), AmountCustomizationActivity.class));
+                break;
+            }
+            case R.id.setting_nfc_export:{
+                NfcAdapter nfcAdapter = NfcAdapter.getDefaultAdapter(getContext());
+
+                if(!nfcAdapter.isEnabled()){
+                    new AlertDialog.Builder(getContext())
+                            .setTitle(getString(R.string.nfc_disable_alert))
+                            .setMessage(getString(R.string.nfc_enable_alert))
+                            .setPositiveButton(getString(R.string.proceed_to_enable), (dialog, which) ->
+                                    startActivity(new Intent("android.settings.NFC_SETTINGS")))
+                            .setNegativeButton(getString(R.string.cancel), null)
+                            .setIcon(android.R.drawable.ic_dialog_alert)
+                            .show();
+                    break;
+                }
+
+                new AlertDialog.Builder(getContext())
+                        .setTitle(getString(R.string.nfc_login))
+                        .setMessage(getString(R.string.log_out_from_old_device) + "?")
+                        .setPositiveButton("OK", (dialog, which) -> {
+                            startActivity(new Intent(getContext(), AccountExportActivity.class));
+                        })
+                        .setNegativeButton(getString(R.string.cancel), null)
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .show();
+                break;
+            }
+            case R.id.setting_tv_logout:{
                 new AlertDialog.Builder(getContext())
                         .setTitle(getString(R.string.log_out))
                         .setMessage(getString(R.string.log_out) + "?")
@@ -43,14 +87,12 @@ public class SettingsFragment extends Fragment {
                         .setNegativeButton(getString(R.string.cancel), null)
                         .setIcon(android.R.drawable.ic_dialog_alert)
                         .show();
+                break;
             }
-        });
-
-        v.findViewById(R.id.tv_language).setOnClickListener(event ->
-                startActivity(new Intent(getActivity(), LanguageActivity.class)));
-
-        v.findViewById(R.id.tv_amount_customization).setOnClickListener(e ->
-                startActivity(new Intent(getActivity(), AmountCustomizationActivity.class)));
-        return v;
+            case R.id.tv_change_pin:{
+                startActivity(new Intent(getActivity(), RegisterPinActivity.class));
+                break;
+            }
+        }
     }
 }

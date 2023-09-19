@@ -24,31 +24,25 @@ import com.utar.merchant.R;
 import com.utar.merchant.cardreader.HCECardReader;
 
 
-
-public class ReceiveActivity extends AppCompatActivity implements HCECardReader.AccountCallback{
+public class ReceiveActivity extends AppCompatActivity implements HCECardReader.AccountCallback {
+    private HCECardReader hceCardReader;
     private final static String TAG = "ReceiveActivity";
-    public static int READER_FLAGS =
-            NfcAdapter.FLAG_READER_NFC_A | NfcAdapter.FLAG_READER_SKIP_NDEF_CHECK;
-    public HCECardReader hceCardReader;
 
     LottieAnimationView lottieAnimationView;
     private CountDownTimer resetTimer;
 
     Button btn_cancel;
     TextView tv_receive_status, tv_receive_amount;
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_receive);
-
         hceCardReader = new HCECardReader(this);
 
         lottieAnimationView = findViewById(R.id.receive_animation);
         tv_receive_status = findViewById(R.id.receive_status);
         tv_receive_amount = findViewById(R.id.receive_amount);
-        tv_receive_amount.setText(String.format(getString(R.string.receiving) + ": RM%.2f",getAmount()));
+        tv_receive_amount.setText(String.format(getString(R.string.receiving) + ": RM%.2f", getAmount()));
         btn_cancel = findViewById(R.id.nfc_cancel);
 
         btn_cancel.setOnClickListener(new View.OnClickListener() {
@@ -77,6 +71,8 @@ public class ReceiveActivity extends AppCompatActivity implements HCECardReader.
         };
     }
 
+
+
     @Override
     public void onBackPressed() {
         super.onBackPressed();
@@ -96,6 +92,8 @@ public class ReceiveActivity extends AppCompatActivity implements HCECardReader.
         enableReaderMode();
     }
 
+    public static int READER_FLAGS =
+            NfcAdapter.FLAG_READER_NFC_A | NfcAdapter.FLAG_READER_SKIP_NDEF_CHECK;
     private void enableReaderMode() {
         Log.i(TAG, "Enabling reader mode");
 
@@ -104,7 +102,6 @@ public class ReceiveActivity extends AppCompatActivity implements HCECardReader.
             nfc.enableReaderMode(this, hceCardReader, READER_FLAGS, null);
         }
     }
-
     private void disableReaderMode() {
         Log.i(TAG, "Disabling reader mode");
 
@@ -162,12 +159,11 @@ public class ReceiveActivity extends AppCompatActivity implements HCECardReader.
         SharedPreferences pref = getSharedPreferences("MySharedPreferences", MODE_PRIVATE);
         String strAmount = pref.getString("amount", "NA");
 
-        if(strAmount.equals("NA")){
+        if (strAmount.equals("NA")) {
             Log.e(TAG, "strAmount from shared preferences is null value");
             return -1;
-        }
-        else{
-            Log.i(TAG, "strAmount: " + strAmount);
+        } else {
+            //Log.i(TAG, "strAmount: " + strAmount);
             return Double.parseDouble(strAmount);
         }
     }

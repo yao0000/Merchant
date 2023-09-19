@@ -18,6 +18,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="15dp"
+        android:layout_marginBottom="15dp"
         android:columnCount="3"
         android:gravity="center"
         android:rowCount="3">
@@ -86,24 +87,6 @@
             android:background="@drawable/baseline_edit_24" />
 
     </GridLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingLeft="25dp"
-        android:paddingRight="15dp">
-
-        <androidx.appcompat.widget.AppCompatCheckBox
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="left"
-            android:text="Constant"
-            android:textSize="18sp" />
-
-
-    </LinearLayout>
-
 
     <include
         layout="@layout/buttons_layout"

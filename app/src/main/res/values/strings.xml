@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">Quick Merchant</string>
+    <string name="nfc" translatable="false">Card Emulation</string>
+    <string name="nfc_service" translatable="false">HCE Service</string>
     <!-- TODO: Remove or change this placeholder text -->
 
     <!-- General -->
@@ -34,6 +36,11 @@
     <string name="login_success">Login Successfully</string>
     <string name="login_fail">Login Failure</string>
     <string name="invalid_account">Invalid Account</string>
+    <string name="new_device">New Device Login</string>
+    <string name="log_out_from_old_device">Log out from old device and log in new device</string>
+
+    <!--NFC Login-->
+    <string name="tap_nfc_device">Tap your phone to a corresponding NFC-enabled device</string>
 
     <!-- Registration -->
     <string name="registration">Registration</string>
@@ -74,8 +81,8 @@
     <string name="filter">Filter</string>
     <string name="reset">Reset</string>
     <string name="noRecord">No record found!</string>
-    <string name="transaction_type" translatable="false">Transaction Type</string>
-    <string name="done" translatable="false">Done</string>
+    <string name="transaction_type">Transaction Type</string>
+    <string name="done">Done</string>
 
 
     <!-- Filtering Popup Windows Use -->
@@ -86,7 +93,7 @@
     <string name="selectDate">Select a date</string>
     <string name="pleaseFillInDate">Please select date</string>
     <string name="date_duration_error">End date should be greater than Start date</string>
-    <string name="period" translatable="false">Period</string>
+    <string name="period">Period</string>
 
     <!--Duration-->
     <string name="today">Today</string>
@@ -108,6 +115,7 @@
     <string name="threeNum" translatable="false">3</string>
     <string name="zeroNum" translatable="false">0</string>
     <string name="dotSymbol" translatable="false">.</string>
+    <string name="clear" translatable="false">C</string>
     <string name="enter">Enter</string>
 
     <!-- Receive Fragment -->
@@ -115,6 +123,7 @@
     <string name="nfc_disable_alert">NFC is disabled</string>
     <string name="nfc_enable_alert">Please enable NFC module</string>
     <string name="proceed_to_enable">Proceed to enable</string>
+    <string name="nfc_not_found">NFC module not supported</string>
 
     <!-- Receive Activity -->
     <string name="receiving">Receiving</string>
@@ -123,7 +132,7 @@
     <!-- Card Reader Class -->
     <string name="please_wait">Please wait...</string>
     <string name="processing">Processing</string>
-    <string name="payment_success">Payment Sucessfully</string>
+    <string name="payment_success">Payment Successfully</string>
     <string name="unknown_tag_detected">Unknown Tag Detected</string>
     <string name="tag_disconnected">Tag Disconnected</string>
     <string name="communication_error">Communication Error</string>
@@ -135,9 +144,15 @@
     <string name="language">Language</string>
     <string name="require_field">This field cannot be blank</string>
     <string name="back_to_login">Back to Login</string>
-    <string name="amount_shortcut_key" translatable="false">Amount Shortcut Key</string>
+    <string name="amount_shortcut_key">Amount Shortcut Key</string>
+    <string name="nfc_login">NFC transfer login</string>
+    <string name="change_authentication_pin">Change Authentication PIN</string>
 
     <!-- Filter Transaction Type-->
     <string name="please_select_at_least_one" translatable="false"></string>
+
+    <!-- PIN Authentication -->
+    <string name="old_pin">Enter Old PIN</string>
+    <string name="new_pin">Enter New PIN</string>
 
 </resources>

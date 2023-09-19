@@ -19,6 +19,26 @@
         android:text="@string/settings" />
 
     <TextView
+        android:id="@+id/tv_change_pin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawableTint="@color/black"
+        android:drawableStart="@drawable/ic_lock"
+        android:drawableEnd="@drawable/ic_baseline_arrow_forward_ios_24"
+        android:drawablePadding="12dp"
+        android:padding="12dp"
+        android:textSize="18sp"
+        android:text="@string/change_authentication_pin" />
+
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#000000"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"/>
+
+    <TextView
         android:id="@+id/tv_amount_customization"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -46,6 +66,23 @@
         android:padding="12dp"
         android:textSize="18sp"
         android:text="@string/language" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#000000"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"/>
+
+    <TextView
+        android:id="@+id/setting_nfc_export"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawableStart="@drawable/baseline_output_24"
+        android:drawablePadding="12dp"
+        android:padding="12dp"
+        android:textSize="18sp"
+        android:text="@string/nfc_login" />
 
     <View
         android:layout_width="match_parent"

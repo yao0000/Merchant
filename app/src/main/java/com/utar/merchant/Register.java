@@ -111,6 +111,10 @@ public class Register extends AppCompatActivity {
                             public void onComplete(Task<AuthResult> task) {
                                 progressBar.setVisibility(View.GONE);
 
+                                if(!task.isSuccessful()){
+
+                                }
+
                                 if (task.isSuccessful()) {
                                     // Sign in success, update UI with the signed-in user's information
                                     toast(getString(R.string.register_successfully));

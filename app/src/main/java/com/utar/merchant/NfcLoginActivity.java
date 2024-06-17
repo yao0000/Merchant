@@ -5,14 +5,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.nfc.NfcAdapter;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.os.Handler;
-import android.os.Looper;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
 import com.airbnb.lottie.LottieAnimationView;
-import com.utar.merchant.cardreader.LoginNfcReader;
+import com.utar.merchant.nfcServices.LoginNfcReader;
 
 public class NfcLoginActivity extends AppCompatActivity implements View.OnClickListener, LoginNfcReader.LoginCallback{
 

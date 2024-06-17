@@ -21,7 +21,7 @@ import android.widget.TextView;
 import com.airbnb.lottie.LottieAnimationView;
 import com.utar.merchant.MainActivity;
 import com.utar.merchant.R;
-import com.utar.merchant.cardreader.HCECardReader;
+import com.utar.merchant.nfcServices.HCECardReader;
 
 
 public class ReceiveActivity extends AppCompatActivity implements HCECardReader.AccountCallback {
@@ -162,10 +162,8 @@ public class ReceiveActivity extends AppCompatActivity implements HCECardReader.
         if (strAmount.equals("NA")) {
             Log.e(TAG, "strAmount from shared preferences is null value");
             return -1;
-        } else {
-            //Log.i(TAG, "strAmount: " + strAmount);
-            return Double.parseDouble(strAmount);
         }
+        return Double.parseDouble(strAmount);
     }
 
     @Override

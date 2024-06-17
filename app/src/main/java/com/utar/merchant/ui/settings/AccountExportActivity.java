@@ -1,27 +1,17 @@
 package com.utar.merchant.ui.settings;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.ComponentName;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
 import com.airbnb.lottie.LottieAnimationView;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-import com.utar.merchant.MainActivity;
 import com.utar.merchant.R;
-import com.utar.merchant.cardreader.AccountExportHCEService;
-import com.utar.merchant.data.Account;
+import com.utar.merchant.nfcServices.AccountExportHCEService;
 
 public class AccountExportActivity extends AppCompatActivity implements AccountExportHCEService.ViewCallback, View.OnClickListener{
 

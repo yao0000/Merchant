@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Quick Merchant</string>
+    <string name="app_name">Tantan</string>
     <string name="nfc" translatable="false">Card Emulation</string>
     <string name="nfc_service" translatable="false">HCE Service</string>
     <!-- TODO: Remove or change this placeholder text -->

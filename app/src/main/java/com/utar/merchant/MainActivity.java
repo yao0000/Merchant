@@ -27,6 +27,7 @@ import com.utar.merchant.ui.settings.SettingsFragment;
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,7 +39,10 @@ public class MainActivity extends AppCompatActivity {
         bottomNavigationView.setOnNavigationItemSelectedListener(navListener);
 
         //first page
-        getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout, new HomeFragment()).commit();
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.frame_layout, new HomeFragment())
+                .commit();
 
         checkDeviceID();
     }
@@ -48,7 +52,8 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public boolean onNavigationItemSelected(MenuItem item) {
             Fragment fragment = null;
-            switch (item.getItemId()){
+
+            switch (item.getItemId()) {
                 case R.id.home:
                     fragment = new HomeFragment();
                     break;
@@ -60,13 +65,18 @@ public class MainActivity extends AppCompatActivity {
                     fragment = new SettingsFragment();
                     break;
             }
-            getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout,fragment).commit();
+
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.frame_layout, fragment)
+                    .commit();
+
             return true;
         }
     };
 
-    private void checkDeviceID(){
-        if(FirebaseAuth.getInstance().getUid() == null) return;
+    private void checkDeviceID() {
+        if (FirebaseAuth.getInstance().getUid() == null) return;
 
         FirebaseDatabase.getInstance()
                 .getReference("user")
@@ -75,10 +85,10 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         Account account = snapshot.getValue(Account.class);
-                        if(account == null) return;
+                        if (account == null) return;
 
                         String deviceId = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
-                        if(!account.getDeviceId().equals(deviceId)){
+                        if (!account.getDeviceId().equals(deviceId)) {
                             FirebaseAuth.getInstance().signOut();
                         }
 
@@ -94,7 +104,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if(FirebaseAuth.getInstance().getUid() == null){
+        if (FirebaseAuth.getInstance().getUid() == null) {
             startActivity(new Intent(this, Login.class));
             finish();
         }

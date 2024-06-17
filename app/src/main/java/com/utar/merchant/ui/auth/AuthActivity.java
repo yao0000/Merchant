@@ -28,7 +28,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executor;
 
-public class AuthActivity extends AppCompatActivity implements View.OnClickListener{
+public class AuthActivity extends AppCompatActivity implements View.OnClickListener {
     private String TAG = "AuthActivity";
     private static final int REQUEST_CODE_REGISTER_PIN_ACTIVITY = 10;
 
@@ -48,7 +48,7 @@ public class AuthActivity extends AppCompatActivity implements View.OnClickListe
 
         init();
 
-        if(MyApplication.getInstance().getAccount().getPin().isEmpty()) {
+        if (MyApplication.getInstance().getAccount().getPin().isEmpty()) {
             Intent intent = new Intent(this, RegisterPinActivity.class);
             intent.putExtra("mode", RegisterPinActivity.CREATE_PIN);
             startActivityForResult(intent, REQUEST_CODE_REGISTER_PIN_ACTIVITY);
@@ -57,7 +57,7 @@ public class AuthActivity extends AppCompatActivity implements View.OnClickListe
         fingerprintAuthenticate();
     }
 
-    private void init(){
+    private void init() {
         linearLayout = findViewById(R.id.ll_passcode);
 
         findViewById(R.id.tv_pass_0).setOnClickListener(this::onClick);
@@ -87,21 +87,20 @@ public class AuthActivity extends AppCompatActivity implements View.OnClickListe
     }
 
 
-
-    public void fingerprintAuthenticate(){
+    public void fingerprintAuthenticate() {
         BiometricManager biometricManager = BiometricManager.from(this);
-        switch (biometricManager.canAuthenticate()){
+        switch (biometricManager.canAuthenticate()) {
             case BiometricManager.BIOMETRIC_ERROR_NO_HARDWARE: {
                 toast("Device doesn't have fingerprint");
                 break;
             }
 
-            case BiometricManager.BIOMETRIC_ERROR_HW_UNAVAILABLE:{
+            case BiometricManager.BIOMETRIC_ERROR_HW_UNAVAILABLE: {
                 toast("Not working");
                 break;
             }
 
-            case BiometricManager.BIOMETRIC_ERROR_NONE_ENROLLED:{
+            case BiometricManager.BIOMETRIC_ERROR_NONE_ENROLLED: {
                 toast("No fingerprint assigned");
                 break;
             }
@@ -136,99 +135,98 @@ public class AuthActivity extends AppCompatActivity implements View.OnClickListe
         biometricPrompt.authenticate(promptInfo);
     }
 
-    private void toast(String msg){
+    private void toast(String msg) {
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onClick(View v) {
-        switch(v.getId()){
-            case R.id.tv_pass_0:{
+        switch (v.getId()) {
+            case R.id.tv_pass_0: {
                 passcodeProcess("0");
                 break;
             }
-            case R.id.tv_pass_1:{
+            case R.id.tv_pass_1: {
                 passcodeProcess("1");
                 break;
             }
-            case R.id.tv_pass_2:{
+            case R.id.tv_pass_2: {
                 passcodeProcess("2");
                 break;
             }
-            case R.id.tv_pass_3:{
+            case R.id.tv_pass_3: {
                 passcodeProcess("3");
                 break;
             }
-            case R.id.tv_pass_4:{
+            case R.id.tv_pass_4: {
                 passcodeProcess("4");
                 break;
             }
-            case R.id.tv_pass_5:{
+            case R.id.tv_pass_5: {
                 passcodeProcess("5");
                 break;
             }
-            case R.id.tv_pass_6:{
+            case R.id.tv_pass_6: {
                 passcodeProcess("6");
                 break;
             }
-            case R.id.tv_pass_7:{
+            case R.id.tv_pass_7: {
                 passcodeProcess("7");
                 break;
             }
-            case R.id.tv_pass_8:{
+            case R.id.tv_pass_8: {
                 passcodeProcess("8");
                 break;
             }
-            case R.id.tv_pass_9:{
+            case R.id.tv_pass_9: {
                 passcodeProcess("9");
                 break;
             }
-            case R.id.tv_backspace:{
+            case R.id.tv_backspace: {
                 passcodeProcess(null);
                 break;
             }
         }
     }
 
-    private void passcodeProcess(String passcode){
-        if(passcode == null){
-            passcodeList.remove(passcodeList.size()-1);
-        }
-        else{
+    private void passcodeProcess(String passcode) {
+        if (passcode == null) {//backspace is clicked
+            passcodeList.remove(passcodeList.size() - 1);
+        } else {
             passcodeList.add(passcode);
         }
 
-        for(int i = 0; i < passcodeList.size(); i++){
+        for (int i = 0; i < passcodeList.size(); i++) {
             viewList.get(i).setBackgroundResource(R.drawable.bg_view_blue_oval);
         }
 
-        for(int i = 5; i >= passcodeList.size(); i-- ){
+        for (int i = 5; i >= passcodeList.size(); i--) {
             viewList.get(i).setBackgroundResource(R.drawable.bg_view_grey_oval);
         }
 
-        if(passcodeList.size() != 6){
+        if (passcodeList.size() != 6) {
             return;
         }
 
         Account account = MyApplication.getInstance().getAccount();
         String pass = "";
 
-        for(int k = 0; k < passcodeList.size(); k++){
+        for (int k = 0; k < passcodeList.size(); k++) {
             pass += passcodeList.get(k);
         }
 
-        if(account.getPin().equals(pass)){
+
+        if (account.getPin().equals(pass)) {
             setResult(RESULT_OK);
             finish();
-        }
-        else{
+        } else {
             linearLayout.startAnimation(animation);
             passcodeList.clear();
-            for(int i = 0; i < viewList.size();i++){
+            for (int i = 0; i < viewList.size(); i++) {
                 viewList.get(i).setBackgroundResource(R.drawable.bg_view_grey_oval);
             }
             Vibrator vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-            if(vibrator.hasVibrator()){
+            if (vibrator.hasVibrator()) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                     vibrator.vibrate(VibrationEffect.createOneShot(50, VibrationEffect.DEFAULT_AMPLITUDE));
                 }
@@ -240,8 +238,8 @@ public class AuthActivity extends AppCompatActivity implements View.OnClickListe
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if(requestCode == REQUEST_CODE_REGISTER_PIN_ACTIVITY){
-            if(resultCode == RESULT_OK){
+        if (requestCode == REQUEST_CODE_REGISTER_PIN_ACTIVITY) {
+            if (resultCode == RESULT_OK) {
                 recreate();
             }
         }

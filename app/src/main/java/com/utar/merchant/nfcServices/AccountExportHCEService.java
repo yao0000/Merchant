@@ -1,25 +1,11 @@
-package com.utar.merchant.cardreader;
+package com.utar.merchant.nfcServices;
 
-import android.content.Intent;
 import android.nfc.cardemulation.HostApduService;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.Toast;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.ChildEventListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-import com.utar.merchant.Login;
-import com.utar.merchant.MyApplication;
 import com.utar.merchant.R;
-import com.utar.merchant.data.Account;
 import com.utar.merchant.ui.settings.AccountExportActivity;
 
 import java.lang.ref.WeakReference;
